@@ -32,7 +32,7 @@ fluid.defaults("gpii.tests.browser.tests.type", {
                     {
                         event:    "{gpii.tests.browser.environment}.browser.events.onTypeComplete",
                         listener: "{gpii.tests.browser.environment}.browser.evaluate",
-                        args:     [gpii.tests.browser.tests.valueLookupFunction, "#textField"]
+                        args:     [gpii.tests.browser.tests.lookupFunction, "#textField", "value"]
                     },
                     {
                         event:     "{gpii.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -45,7 +45,7 @@ fluid.defaults("gpii.tests.browser.tests.type", {
                     {
                         listener: "{gpii.tests.browser.environment}.browser.evaluate",
                         event:    "{gpii.tests.browser.environment}.browser.events.onLoaded",
-                        args:     [gpii.tests.browser.tests.valueLookupFunction, "#textField"]
+                        args:     [gpii.tests.browser.tests.lookupFunction, "#textField", "value"]
                     },
                     {
                         event:     "{gpii.tests.browser.environment}.browser.events.onEvaluateComplete",

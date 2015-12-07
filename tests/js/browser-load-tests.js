@@ -28,7 +28,7 @@ fluid.defaults("gpii.tests.browser.tests.load", {
                     {
                         event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
                         listener: "{gpii.tests.browser.environment}.browser.evaluate",
-                        args:     [gpii.tests.browser.tests.textLookupFunction, "body"]
+                        args:     [gpii.tests.browser.tests.lookupFunction, "body", "innerText"]
                     },
                     {
                         listener: "jqUnit.assertEquals",
@@ -45,9 +45,9 @@ fluid.defaults("gpii.tests.browser.tests.load", {
                         args: [badUrl]
                     },
                     {
-                        listener: "gpii.tests.browser.tests.hasError",
+                        listener: "jqUnit.assertNotUndefined",
                         event:    "{gpii.tests.browser.environment}.browser.events.onError",
-                        args:     ["{arguments}.0"]
+                        args:     ["An error should have been thrown...", "{arguments}.0"]
                     }
                 ]
             }

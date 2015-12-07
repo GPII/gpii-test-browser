@@ -30,9 +30,9 @@ fluid.defaults("gpii.tests.browser.tests.click", {
                         args:     [".bogus"]
                     },
                     {
-                        listener: "gpii.tests.browser.tests.hasError",
+                        listener: "jqUnit.assertNotUndefined",
                         event:    "{gpii.tests.browser.environment}.browser.events.onError",
-                        args:     ["{gpii.tests.browser.environment}.browser", "{arguments}"]
+                        args:     ["An error should have been thrown...", "{arguments}.0"]
                     }
                 ]
             },
@@ -51,7 +51,7 @@ fluid.defaults("gpii.tests.browser.tests.click", {
                     {
                         event:    "{gpii.tests.browser.environment}.browser.events.onLoaded",
                         listener: "{gpii.tests.browser.environment}.browser.evaluate",
-                        args:     [gpii.tests.browser.tests.textLookupFunction, "body"]
+                        args:     [gpii.tests.browser.tests.lookupFunction, "body", "innerText"]
                     },
                     {
                         listener: "jqUnit.assertEquals",
@@ -75,7 +75,7 @@ fluid.defaults("gpii.tests.browser.tests.click", {
                     {
                         event:    "{gpii.tests.browser.environment}.browser.events.onLoaded",
                         listener: "{gpii.tests.browser.environment}.browser.evaluate",
-                        args:     [gpii.tests.browser.tests.textLookupFunction, "body"]
+                        args:     [gpii.tests.browser.tests.lookupFunction, "body", "innerText"]
                     },
                     {
                         listener: "jqUnit.assertEquals",
@@ -99,7 +99,7 @@ fluid.defaults("gpii.tests.browser.tests.click", {
                     {
                         event:    "{gpii.tests.browser.environment}.browser.events.onLoaded",
                         listener: "{gpii.tests.browser.environment}.browser.evaluate",
-                        args:     [gpii.tests.browser.tests.textLookupFunction, "body"]
+                        args:     [gpii.tests.browser.tests.lookupFunction, "body", "innerText"]
                     },
                     {
                         listener: "jqUnit.assertEquals",

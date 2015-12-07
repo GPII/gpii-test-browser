@@ -32,7 +32,7 @@ fluid.defaults("gpii.tests.browser.tests.check", {
                     {
                         event:    "{gpii.tests.browser.environment}.browser.events.onCheckComplete",
                         listener: "{gpii.tests.browser.environment}.browser.evaluate",
-                        args:     [gpii.tests.browser.tests.valueLookupFunction, ":checked"]
+                        args:     [gpii.tests.browser.tests.lookupFunction, ":checked", "value"]
                     },
                     {
                         event:     "{gpii.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -56,7 +56,7 @@ fluid.defaults("gpii.tests.browser.tests.check", {
                     {
                         event:    "{gpii.tests.browser.environment}.browser.events.onCheckComplete",
                         listener: "{gpii.tests.browser.environment}.browser.evaluate",
-                        args:     [gpii.tests.browser.tests.valueLookupFunction, ":checked"]
+                        args:     [gpii.tests.browser.tests.lookupFunction, ":checked", "value"]
                     },
                     {
                         event:     "{gpii.tests.browser.environment}.browser.events.onEvaluateComplete",

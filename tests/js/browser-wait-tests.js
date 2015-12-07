@@ -27,7 +27,7 @@ fluid.defaults("gpii.tests.browser.tests.wait", {
                     {
                         event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
                         listener: "{gpii.tests.browser.environment}.browser.evaluate",
-                        args:     [gpii.tests.browser.tests.textLookupFunction, "#waiting"]
+                        args:     [gpii.tests.browser.tests.lookupFunction, "#waiting", "innerText"]
                     },
                     {
                         listener: "jqUnit.assertEquals",
@@ -41,7 +41,7 @@ fluid.defaults("gpii.tests.browser.tests.wait", {
                     {
                         event:    "{gpii.tests.browser.environment}.browser.events.onWaitComplete",
                         listener: "{gpii.tests.browser.environment}.browser.evaluate",
-                        args:     [gpii.tests.browser.tests.textLookupFunction, "#waiting"]
+                        args:     [gpii.tests.browser.tests.lookupFunction, "#waiting", "innerText"]
                     },
                     {
                         listener: "jqUnit.assertEquals",

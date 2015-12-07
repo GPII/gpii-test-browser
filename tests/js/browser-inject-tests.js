@@ -34,7 +34,7 @@ fluid.defaults("gpii.tests.browser.tests.inject", {
                     {
                         event:    "{gpii.tests.browser.environment}.browser.events.onInjectComplete",
                         listener: "{gpii.tests.browser.environment}.browser.evaluate",
-                        args:     [gpii.tests.browser.tests.textLookupFunction, "body"]
+                        args:     [gpii.tests.browser.tests.lookupFunction, "body", "innerText"]
                     },
                     {
                         listener: "jqUnit.assertEquals",

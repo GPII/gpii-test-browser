@@ -1,8 +1,6 @@
 "use strict";
-var fluid = require("infusion");
+var fluid = fluid || require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
-
-var jqUnit = require("node-jqunit");
 
 fluid.registerNamespace("gpii.tests.browser.tests");
 
@@ -16,7 +14,7 @@ fluid.registerNamespace("gpii.tests.browser.tests");
     {
         event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
         listener: "{gpii.tests.browser.environment}.browser.evaluate",
-        args:     [gpii.tests.browser.tests.textLookupFunction, "body"]
+        args:     [gpii.tests.browser.tests.lookupFunction, "body", "innerText"]
     },
     {
         event:    "{gpii.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -27,26 +25,21 @@ fluid.registerNamespace("gpii.tests.browser.tests");
 
  */
 
-gpii.tests.browser.tests.textLookupFunction = function (selector) {
-    var element = document.querySelector(selector);
-    return element && element.innerText ? element.innerText : undefined;
-};
-
-gpii.tests.browser.tests.htmlLookupFunction = function (selector) {
-    var element = document.querySelector(selector);
-    return element && element.innerHTML ? element.innerHTML : undefined;
-};
-
-gpii.tests.browser.tests.valueLookupFunction = function (selector) {
-    var element = document.querySelector(selector);
-    return element && element.value ? element.value : undefined;
-};
-
-/*
-
-  Static function to handle (expected) errors.
-
- */
-gpii.tests.browser.tests.hasError = function (error) {
-    jqUnit.assertNotUndefined("There should have been an error...", error);
+gpii.tests.browser.tests.lookupFunction = function (selector, fnName) {
+    var elements = document.querySelectorAll(selector), results  = [];
+    for (var a = 0; a < elements.length; a++) {
+        var element = elements[a];
+        if (element && element[fnName]) {
+            results.push(element[fnName]);
+        }
+    }
+    if (results.length === 0) {
+        return undefined;
+    }
+    else if (results.length === 1) {
+        return results[0];
+    }
+    else {
+        return results;
+    }
 };
