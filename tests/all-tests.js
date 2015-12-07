@@ -11,11 +11,12 @@
 
     TODO:  Remove the workaround once this issue is resolved: https://github.com/segmentio/nightmare/issues/282
  */
-process.setMaxListeners(25);
+process.setMaxListeners(50);
 
 require("./js/browser-check-tests.js");
 require("./js/browser-click-tests.js");
 require("./js/browser-exists-tests.js");
+require("./js/browser-evaluate-function-tests.js");
 require("./js/browser-inject-tests");
 require("./js/browser-load-tests");
 require("./js/browser-navigation-tests.js");
