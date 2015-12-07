@@ -1,0 +1,31 @@
+{
+  "name": "gpii-test-browser",
+  "version": "0.0.1",
+  "description": "Fluid component to allow browser testing using Nightmare...",
+  "main": "index.js",
+  "scripts": {
+    "test": "node tests/all-tests.js",
+    "postinstall": "grunt dedupe-infusion"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GPII/gpii-test-browser"
+  },
+  "author": "Tony Atkins <tony@raisingthefloor.org>",
+  "license": "BSD-3-Clause",
+  "dependencies": {
+    "grunt": "0.4.4",
+    "grunt-contrib-jshint": "0.9.0",
+    "grunt-gpii": "git://github.com/GPII/grunt-gpii.git#58ae055833f437a9e91baedb9f39a22c5fdd727f",
+    "grunt-jsonlint": "1.0.4",
+    "grunt-shell": "0.6.4",
+    "infusion": "2.0.0-dev.20151113T224751Z.3ba00f2",
+    "nightmare": "2.0.8"
+  },
+  "devDependencies": {
+    "gpii-express": "git://github.com/the-t-in-rtf/gpii-express#23c741948502885d4a702b605c343ce100e54ed7",
+    "cookie": "^0.2.0",
+    "kettle": "git://github.com/amb26/kettle.git#5859890a80794efe6797aed520efae39f8c66851",
+    "node-jqunit": "~1.1.3"
+  }
+}

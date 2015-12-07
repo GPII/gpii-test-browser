@@ -1,0 +1,14 @@
+require("./js/browser-check-tests.js");
+require("./js/browser-click-tests.js");
+require("./js/browser-exists-tests.js");
+require("./js/browser-inject-tests");
+require("./js/browser-load-tests");
+require("./js/browser-navigation-tests.js");
+require("./js/browser-refresh-tests.js");
+require("./js/browser-screenshot-tests.js");
+require("./js/browser-select-tests.js");
+require("./js/browser-title-tests.js");
+require("./js/browser-type-tests.js");
+require("./js/browser-url-tests.js");
+require("./js/browser-visible-tests.js");
+require("./js/browser-wait-tests.js");
