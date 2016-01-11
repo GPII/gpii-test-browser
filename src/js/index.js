@@ -79,7 +79,7 @@ var os        = require("os");
 var path      = require("path");
 
 gpii.tests.browser.init = function (that) {
-    that.nightmare = new Nightmare(that.options.nightmareOptions); // jshint ignore: line
+    that.nightmare = new Nightmare(that.options.nightmareOptions);
 
     fluid.each(that.options.eventBindings, function (rawEventOrEvents, fluidEvent) {
         var rawEvents = fluid.makeArray(rawEventOrEvents);
