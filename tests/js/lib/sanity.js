@@ -44,3 +44,29 @@ gpii.tests.browser.tests.lookupFunction = function (selector, fnName) {
         return results;
     }
 };
+
+/*
+
+    Function that uses Fluid to look up namespaced global variables according to their path.  Your client-side page must
+    have Fluid loaded in order to use this.  You would wire this into a test using a sequence like:
+
+
+     ```
+     {
+         event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
+         listener: "{gpii.tests.browser.environment}.browser.evaluate",
+         args:     [gpii.tests.browser.tests.getGlobalValue, "document.title"]
+     },
+     {
+         event:    "{gpii.tests.browser.environment}.browser.events.onEvaluateComplete",
+         listener: "jqUnit.assertEquals",
+         args:     ["The title should be as expected...", "Test environment for exercising evaluation functions...", "{arguments}.0"]
+     }
+     ```
+
+    For more details, check out `browser-fluid-tests.js`.
+ */
+gpii.tests.browser.tests.getGlobalValue = function (path) {
+    /* globals fluid */
+    return fluid.getGlobalValue(path);
+};
