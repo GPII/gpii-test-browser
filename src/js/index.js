@@ -111,7 +111,7 @@ gpii.tests.browser.end = function (that) {
     // For some reason the "end" callback does not always execute, so we use an interval to take care of business
     var millis = 0, intervalTimer = setInterval(function () {
         millis += that.options.endInterval;
-        if (that.nightmare.ended === true) {
+        if (that.nightmare.ended) {
             clearInterval(intervalTimer);
             that.events.onEndComplete.fire(that);
         } else if (millis > that.options.endTimeout) {
