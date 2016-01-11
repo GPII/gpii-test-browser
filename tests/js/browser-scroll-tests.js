@@ -15,6 +15,7 @@ var scrollPage = url.resolve(url.resolve("file://", __dirname), "./static/html/s
 
 fluid.registerNamespace("gpii.tests.browser.tests.scroll");
 gpii.tests.browser.tests.scroll.getWindowOffset = function () {
+    /* globals window */
     return [window.pageXOffset, window.pageYOffset];
 };
 

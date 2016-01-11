@@ -26,6 +26,7 @@ fluid.registerNamespace("gpii.tests.browser.tests");
  */
 
 gpii.tests.browser.tests.lookupFunction = function (selector, fnName) {
+    /* globals document */
     var elements = document.querySelectorAll(selector), results  = [];
     for (var a = 0; a < elements.length; a++) {
         var element = elements[a];

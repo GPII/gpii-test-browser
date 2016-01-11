@@ -6,7 +6,7 @@ A test script to look at how Nightmare behaves natively.  This should not be use
 "use strict";
 var Nightmare = require("nightmare");
 
-var path = require("path");
+//var path = require("path");
 var url = require("url");
 
 var startPage = url.resolve(url.resolve("file://", __dirname), "./static/html/select.html");
@@ -58,9 +58,10 @@ var startPage = url.resolve(url.resolve("file://", __dirname), "./static/html/se
 //browser.end.apply(browser);
 
 var browser = new Nightmare({ show: true});
-browser.goto.apply(browser, [startPage]);
+browser["goto"].apply(browser, [startPage]);
 browser.select.apply(browser, ["select", "two"]);
 browser.evaluate.apply(browser, [function () {
+    /* globals document */
     return document.querySelector("select").value;
 }]);
 browser.run.apply(browser, [function (err, result) {

@@ -11,7 +11,6 @@ require("../../index");
 gpii.tests.browser.loadTestingSupport();
 
 var fs       = require("fs");
-var util     = require("util");
 var jqUnit   = require("node-jqunit");
 var url      = require("url");
 var startUrl = url.resolve(url.resolve("file://", __dirname), "./static/html/click.html");
