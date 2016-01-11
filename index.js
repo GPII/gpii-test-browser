@@ -4,5 +4,7 @@
     optionally load testing support.
 
  */
+var fluid = require("infusion");
+fluid.module.register("gpii-test-browser", __dirname, require);
 
 require("./src/js/index");

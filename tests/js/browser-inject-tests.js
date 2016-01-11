@@ -12,8 +12,8 @@ gpii.tests.browser.loadTestingSupport();
 
 var path           = require("path");
 var injectedJsPath = path.resolve(__dirname, "../static/js/inject.js");
-var url            = require("url");
-var injectUrl      = url.resolve(url.resolve("file://", __dirname), "./static/html/inject.html");
+
+var injectUrl = gpii.tests.browser.tests.resolveFileUrl("%gpii-test-browser/tests/static/html/inject.html");
 
 fluid.defaults("gpii.tests.browser.tests.inject", {
     gradeNames: ["gpii.tests.browser.caseHolder.static"],

@@ -1,6 +1,7 @@
 "use strict";
 var fluid = fluid || require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
+var url   = require("url");
 
 fluid.registerNamespace("gpii.tests.browser.tests");
 
@@ -69,4 +70,13 @@ gpii.tests.browser.tests.lookupFunction = function (selector, fnName) {
 gpii.tests.browser.tests.getGlobalValue = function (path) {
     /* globals fluid */
     return fluid.getGlobalValue(path);
+};
+
+/*
+    Resolve File URLs relative to the location this module. `path` should be something like:
+
+    `%gpii-test-browser/tests/static/html/check.html`
+*/
+gpii.tests.browser.tests.resolveFileUrl = function (path) {
+    return url.resolve("file://", fluid.module.resolvePath(path));
 };

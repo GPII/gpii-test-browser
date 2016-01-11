@@ -12,8 +12,8 @@ gpii.tests.browser.loadTestingSupport();
 
 var fs       = require("fs");
 var jqUnit   = require("node-jqunit");
-var url      = require("url");
-var startUrl = url.resolve(url.resolve("file://", __dirname), "./static/html/click.html");
+
+var startUrl = gpii.tests.browser.tests.resolveFileUrl("%gpii-test-browser/tests/static/html/click.html");
 
 fluid.registerNamespace("gpii.tests.browser.tests.screenshot");
 gpii.tests.browser.tests.screenshot.fileExists = function (path) {

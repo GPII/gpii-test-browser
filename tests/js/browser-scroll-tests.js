@@ -10,8 +10,7 @@ var gpii  = fluid.registerNamespace("gpii");
 require("../../index");
 gpii.tests.browser.loadTestingSupport();
 
-var url        = require("url");
-var scrollPage = url.resolve(url.resolve("file://", __dirname), "./static/html/scroll.html");
+var scrollPage = gpii.tests.browser.tests.resolveFileUrl("%gpii-test-browser/tests/static/html/scroll.html");
 
 fluid.registerNamespace("gpii.tests.browser.tests.scroll");
 gpii.tests.browser.tests.scroll.getWindowOffset = function () {

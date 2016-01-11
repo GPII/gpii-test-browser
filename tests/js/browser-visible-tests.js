@@ -10,8 +10,7 @@ var gpii  = fluid.registerNamespace("gpii");
 require("../../index");
 gpii.tests.browser.loadTestingSupport();
 
-var url     = require("url");
-var goodUrl = url.resolve(url.resolve("file://", __dirname), "./static/html/visible.html");
+var goodUrl = gpii.tests.browser.tests.resolveFileUrl("%gpii-test-browser/tests/static/html/visible.html");
 
 fluid.defaults("gpii.tests.browser.tests.visible", {
     gradeNames: ["gpii.tests.browser.caseHolder.static"],
