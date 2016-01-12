@@ -93,17 +93,6 @@ gpii.tests.browser.init = function (that) {
     that.events.onReady.fire(that);
 };
 
-gpii.tests.browser.execute = function (that, eventName, fnName, args) {
-    var argsArray = fluid.makeArray(args);
-    that.nightmare[fnName].apply(that.nightmare, argsArray).run(function (err, result) {
-        if (err) {
-            that.events.onError.fire(err);
-        } else {
-            that.events[eventName].fire(result);
-        }
-    });
-};
-
 // TODO:  Review and see why the process must be killed.
 gpii.tests.browser.end = function (that) {
     that.nightmare.end();
@@ -125,41 +114,87 @@ gpii.tests.browser.end = function (that) {
     }, that.options.endInterval);
 };
 
+/*
 
-gpii.tests.browser.executeAndReturnValue = function (that, eventName, fnName, args) {
-    var argsArray = args ? fluid.makeArray(args) : [];
-    that.nightmare[fnName].apply(that.nightmare, argsArray).run(function (error, result) {
+    Return a function that can be used to process the results of a Nightmare function call.  For most functions,
+    the return value from Nightmare is fired as an argument when triggering `eventName`.  For functions like `pdf` and
+    `screenshot` that do not return important information, the `externalResult` option can be used.  This value will be
+    passed to the event if there are no errors and if Nightmare itself does not return a result.
+
+ */
+gpii.tests.browser.makeNightmareHandlerFunction = function (that, eventName, externalResult)  {
+    return function (error, result) {
+        if (!result && externalResult) { result = externalResult; }
         if (error) {
             that.events.onError.fire(error);
         } else {
             that.events[eventName].fire(result);
         }
-    });
+    };
 };
 
-// We have a separate function for this because the clipping rect is off otherwise.
-gpii.tests.browser.executeScreenshot = function (that, eventName) {
-    var shotPath = path.resolve(os.tmpdir(), "screenshot-" + (new Date()).getTime() + ".png");
-    that.nightmare.screenshot(shotPath, { x: 1, y: 1, width: 100, height: 100}).run(function (error) {
-        if (error) {
-            that.events.onError.fire(error);
-        } else {
-            that.events[eventName].fire(shotPath);
-        }
-    });
+/*
+
+    Execute the Nightmare function 'fnName' with the supplied `args` and handle the result.  This will typically result in either
+    firing an 'onError' event with any errors or firing `eventName` with any results.
+
+ */
+gpii.tests.browser.execute = function (that, eventName, fnName, args) {
+    var argsArray = args ? fluid.makeArray(args) : [];
+    that.nightmare[fnName].apply(that.nightmare, argsArray).run(gpii.tests.browser.makeNightmareHandlerFunction(that, eventName));
 };
 
-gpii.tests.browser.executePdf = function (that, eventName, fnName, options) {
-    var shotPath = path.resolve(os.tmpdir(), fnName + "-" + (new Date()).getTime() + ".pdf"), args = [shotPath];
-    // If we pass empty options along, PNG screen shots may be cropped to an empty square.
-    if (options) { args.push(options); }
-    that.nightmare[fnName].apply(that.nightmare, args).run(function (error) {
-        if (error) {
-            that.events.onError.fire(error);
-        } else {
-            that.events[eventName].fire(shotPath);
-        }
-    });
+/*
+
+    Generate the path to a file in the temp directory.  Used as the default for screenshots and PDFs.
+
+ */
+gpii.tests.browser.generateTempFilePath = function (tag, extension) {
+    return path.resolve(os.tmpdir(), tag + "-" + (new Date()).getTime() + "." + extension);
+};
+
+/*
+
+    We have a separate wrapper for the `screenshot` function so that we can:
+
+      1. Pass a filename and sane defaults
+      2. Return the output path instead of `undefined`, which is the default.
+
+    You can override the file location and clipping options by passing in your own `args`.
+
+ */
+gpii.tests.browser.executeScreenshot = function (that, eventName, args) {
+    var argsArray = fluid.makeArray(args);
+    if (!argsArray[0]) {
+        argsArray[0] = gpii.tests.browser.generateTempFilePath("screenshot", "png");
+    }
+
+    if (!argsArray[1]) {
+        argsArray[1] = { x: 1, y: 1, width: 1200, height: 800};
+    }
+
+    fluid.log("Saving screenshot to '" + argsArray[0] + "'...");
+    that.nightmare.screenshot.apply(that.nightmare, argsArray).run(gpii.tests.browser.makeNightmareHandlerFunction(that, eventName, argsArray[0]));
+};
+
+/*
+
+    We have a separate wrapper for the `pdf` function so that we can:
+
+      1. Pass a sensible default filename.
+      2. Return the output path instead of `undefined`, which is the default.
+
+    You can supply your own filename (and any PDF options) by passing in your own `args`.
+
+ */
+gpii.tests.browser.executePdf = function (that, eventName, args) {
+    var argsArray = fluid.makeArray(args);
+    if (!argsArray[0]) {
+        argsArray[0] = gpii.tests.browser.generateTempFilePath("pdf", "pdf");
+    }
+
+    fluid.log("Saving PDF file to '" + argsArray[0] + "'...");
+    that.nightmare.pdf.apply(that.nightmare, argsArray).run(gpii.tests.browser.makeNightmareHandlerFunction(that, eventName, argsArray[0]));
 };
 
 // TODO:  Implement this once this issue is resolved -> https://github.com/segmentio/nightmare/issues/244
@@ -273,30 +308,30 @@ fluid.defaults("gpii.tests.browser", {
             args:     ["{that}", "onWaitComplete", "wait", "{arguments}"]
         },
         exists: {
-            funcName: "gpii.tests.browser.executeAndReturnValue",
+            funcName: "gpii.tests.browser.execute",
             args:     ["{that}", "onExistsComplete", "exists", "{arguments}"]
         },
         // Functions that return a native value.
         visible: {
-            funcName: "gpii.tests.browser.executeAndReturnValue",
+            funcName: "gpii.tests.browser.execute",
             args:     ["{that}", "onVisibleComplete", "visible", "{arguments}"]
         },
         title: {
-            funcName: "gpii.tests.browser.executeAndReturnValue",
+            funcName: "gpii.tests.browser.execute",
             args:     ["{that}", "onTitleComplete", "title"]
         },
         url: {
-            funcName: "gpii.tests.browser.executeAndReturnValue",
+            funcName: "gpii.tests.browser.execute",
             args:     ["{that}", "onUrlComplete", "url"]
         },
         // Functions that return the path to a saved screen shot.
         screenshot: {
             funcName: "gpii.tests.browser.executeScreenshot",
-            args: ["{that}", "onScreenshotComplete", "screenshot"]
+            args: ["{that}", "onScreenshotComplete", "{arguments}"]
         },
         pdf: {
             funcName: "gpii.tests.browser.executePdf",
-            args: ["{that}", "onPdfComplete", "pdf", "{arguments}.0"]
+            args: ["{that}", "onPdfComplete", "{arguments}"]
         }
         //,
         //// End wrappers for Nightmare functions, begin our custom value-add functions.

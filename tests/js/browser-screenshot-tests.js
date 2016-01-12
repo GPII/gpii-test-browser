@@ -5,6 +5,7 @@
  */
 "use strict";
 var fluid = require("infusion");
+fluid.setLogging(true);
 var gpii  = fluid.registerNamespace("gpii");
 
 require("../../index");
@@ -26,28 +27,46 @@ fluid.defaults("gpii.tests.browser.tests.screenshot", {
     gradeNames: ["gpii.tests.browser.caseHolder.static"],
     rawModules: [{
         tests: [
-            // TODO:  I cannot get this to consistently take non-empty screen shots.  Leave it for now until we have a good use case.
-            //{
-            //    name: "Test taking a PNG screenshot...",
-            //    sequence: [
-            //        {
-            //            func: "{gpii.tests.browser.environment}.browser.goto",
-            //            args: [startUrl]
-            //        },
-            //        {
-            //            listener: "{gpii.tests.browser.environment}.browser.screenshot",
-            //            event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
-            //            args:     [{x: 0, y: 0, width: 100, height: 100}]
-            //        },
-            //        {
-            //            listener: "gpii.tests.browser.tests.screenshot.fileExists",
-            //            event:    "{gpii.tests.browser.environment}.browser.events.onScreenshotComplete",
-            //            args:     ["{arguments}.0"]
-            //        }
-            //    ]
-            //},
             {
-                name: "Test taking a PDF screenshot...",
+                name: "Test taking a PNG screenshot with the default options...",
+                sequence: [
+                    {
+                        func: "{gpii.tests.browser.environment}.browser.goto",
+                        args: [startUrl]
+                    },
+                    {
+                        listener: "{gpii.tests.browser.environment}.browser.screenshot",
+                        event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete"
+                    },
+                    {
+                        listener: "gpii.tests.browser.tests.screenshot.fileExists",
+                        event:    "{gpii.tests.browser.environment}.browser.events.onScreenshotComplete",
+                        args:     ["{arguments}.0"]
+                    }
+                ]
+            },
+            // We are not testing the size of the file or its content, only that it was successfully created and is not empty
+            {
+                name: "Test taking a PNG screenshot with custom dimensions...",
+                sequence: [
+                    {
+                        func: "{gpii.tests.browser.environment}.browser.goto",
+                        args: [startUrl]
+                    },
+                    {
+                        listener: "{gpii.tests.browser.environment}.browser.screenshot",
+                        event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
+                        args:     [ null, { x: 1, y: 1, width: 100, height: 100}]
+                    },
+                    {
+                        listener: "gpii.tests.browser.tests.screenshot.fileExists",
+                        event:    "{gpii.tests.browser.environment}.browser.events.onScreenshotComplete",
+                        args:     ["{arguments}.0"]
+                    }
+                ]
+            },
+            {
+                name: "Test taking a PDF screenshot with the default options...",
                 sequence: [
                     {
                         func: "{gpii.tests.browser.environment}.browser.goto",
