@@ -1,0 +1,13 @@
+<html>
+<head>
+    <title>Test environment for exercising Nightmare</title>
+</head>
+<body>
+    <div id="waiting">The table has not yet been set.</div>
+    <script type="text/javascript">
+        setTimeout(function(){
+            document.getElementById("waiting").innerHTML = "The table has been set.";
+        }, 250);
+    </script>
+</body>
+</html>
