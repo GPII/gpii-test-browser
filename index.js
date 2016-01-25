@@ -5,6 +5,10 @@
 
  */
 var fluid = require("infusion");
+var gpii  = fluid.registerNamespace("gpii");
+
 fluid.module.register("gpii-test-browser", __dirname, require);
 
 require("./src/js/index");
+
+module.exports = gpii.tests.browser;
