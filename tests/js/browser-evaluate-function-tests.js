@@ -129,7 +129,84 @@ fluid.defaults("gpii.tests.browser.tests.evaluate", {
                         args:     ["The values should be as expected...", ["one", "two", "three"], "{arguments}.0"]
                     }
                 ]
+            },
+            {
+                name: "Test using getElementHtml without a function name...",
+                sequence: [
+                    {
+                        func: "{gpii.tests.browser.environment}.browser.goto",
+                        args: [testUrl]
+                    },
+                    {
+                        event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
+                        listener: "{gpii.tests.browser.environment}.browser.evaluate",
+                        args:     [gpii.tests.browser.tests.getElementHtml, ".singleHtml"]
+                    },
+                    {
+                        listener: "jqUnit.assertEquals",
+                        event:    "{gpii.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        args:     ["The selector's html value should be as expected...", "This is <b>html</b>.", "{arguments}.0"]
+                    }
+                ]
+            },
+            {
+                name: "Test using getElementHtml with a function name...",
+                sequence: [
+                    {
+                        func: "{gpii.tests.browser.environment}.browser.goto",
+                        args: [testUrl]
+                    },
+                    {
+                        event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
+                        listener: "{gpii.tests.browser.environment}.browser.evaluate",
+                        args:     [gpii.tests.browser.tests.getElementHtml, ".singleHtml", "next"]
+                    },
+                    {
+                        listener: "jqUnit.assertEquals",
+                        event:    "{gpii.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        args:     ["The next html value should be as expected...", "valueLookupFunction", "{arguments}.0"]
+                    }
+                ]
+            },
+            {
+                name: "Confirm a match using elementMatches with a function name...",
+                sequence: [
+                    {
+                        func: "{gpii.tests.browser.environment}.browser.goto",
+                        args: [testUrl]
+                    },
+                    {
+                        event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
+                        listener: "{gpii.tests.browser.environment}.browser.evaluate",
+                        args:     [gpii.tests.browser.tests.elementMatches, ".singleHtml", "l.+o.+tion", "next"] // "lookupValueFunction"
+                    },
+                    {
+                        listener: "jqUnit.assertTrue",
+                        event:    "{gpii.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        args:     ["There should be a match...", "{arguments}.0"]
+                    }
+                ]
+            },
+            {
+                name: "Confirm that content does not match using elementMatches with a function name...",
+                sequence: [
+                    {
+                        func: "{gpii.tests.browser.environment}.browser.goto",
+                        args: [testUrl]
+                    },
+                    {
+                        event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
+                        listener: "{gpii.tests.browser.environment}.browser.evaluate",
+                        args:     [gpii.tests.browser.tests.elementMatches, ".singleHtml", "not found", "next"]
+                    },
+                    {
+                        listener: "jqUnit.assertFalse",
+                        event:    "{gpii.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        args:     ["There should not be a match...", "{arguments}.0"]
+                    }
+                ]
             }
+            // TODO:  Pass in bogus data to confirm that errors are thrown.
         ]
     }]
 });

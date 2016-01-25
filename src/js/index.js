@@ -71,7 +71,8 @@ fluid.registerNamespace("gpii.tests.browser");
 
 gpii.tests.browser.loadTestingSupport = function () {
     require("../../tests/js/lib/fixtures");
-    require("../../tests/js/lib/sanity");
+    require("../../tests/js/lib/resolve-file-url");
+    require("../../tests/js/lib/evaluate-client-functions");
 };
 
 var Nightmare = require("nightmare");
