@@ -60,14 +60,14 @@ fluid.defaults("gpii.tests.browser.caseHolder.withExpress", {
     // but only when running through `all-tests.js`.
     sequenceEnd: [
         {
-            func: "{gpii.templates.tests.browser.environment}.express.destroy"
+            func: "{gpii.tests.browser.environment.withExpress}.express.destroy"
         },
         {
-            func: "{gpii.templates.tests.browser.environment}.browser.end"
+            func: "{gpii.tests.browser.environment.withExpress}.browser.end"
         },
         {
             listener: "fluid.identity",
-            event: "{gpii.templates.tests.browser.environment}.events.onAllDone"
+            event: "{gpii.tests.browser.environment.withExpress}.events.onAllDone"
         }
     ]
 });
@@ -122,8 +122,8 @@ fluid.defaults("gpii.tests.browser.environment.withExpress", {
     port: 6984,
     path: "",
     events: {
-        onHarnessDone:  null,
-        onHarnessReady: null,
+        onExpressDone:  null,
+        onExpressReady: null,
         onAllDone: {
             events: {
                 onBrowserDone: "onBrowserDone",
@@ -148,13 +148,25 @@ fluid.defaults("gpii.tests.browser.environment.withExpress", {
             type: "gpii.express",
             createOnEvent: "constructFixtures",
             options: {
-                port: "{gpii.templates.tests.browser.environment}.options.port",
+                port: "{gpii.tests.browser.environment.withExpress}.options.port",
+                baseUrl: {
+                    expander: {
+                        funcName: "fluid.stringTemplate",
+                        args: ["http://localhost:%port/", { port: "{that}.options.port"}]
+                    }
+                },
+                config:  {
+                    express: {
+                        port:    "{that}.options.port",
+                        baseUrl: "{that}.options.baseUrl"
+                    }
+                },
                 listeners: {
                     "onStarted.notifyEnvironment": {
-                        func: "{gpii.templates.tests.browser.environment}.events.onExpressReady.fire"
+                        func: "{gpii.tests.browser.environment.withExpress}.events.onExpressReady.fire"
                     },
                     "afterDestroy.notifyEnvironment": {
-                        func: "{gpii.templates.tests.browser.environment}.events.onExpressDone.fire"
+                        func: "{gpii.tests.browser.environment.withExpress}.events.onExpressDone.fire"
                     }
                 }
             }
