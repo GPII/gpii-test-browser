@@ -24,9 +24,13 @@ fluid.defaults("gpii.tests.browser.tests.type", {
                         args: [typeDemoUrl]
                     },
                     {
-                        event: "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
-                        func:  "{gpii.tests.browser.environment}.browser.type",
-                        args:  ["#textField", "this is new text..."]
+                        func: "{gpii.tests.browser.environment}.browser.type",
+                        args: ["#textField", false]
+                    },
+                    {
+                        event:    "{gpii.tests.browser.environment}.browser.events.onTypeComplete",
+                        listener: "{gpii.tests.browser.environment}.browser.type",
+                        args:     ["#textField", "this is new text..."]
                     },
                     {
                         event:    "{gpii.tests.browser.environment}.browser.events.onTypeComplete",
