@@ -85,6 +85,25 @@ gpii.tests.browser.tests.elementMatches = function (selector, patternString, fnN
     return Boolean(element.html().match(new RegExp(patternString, "mi")));
 };
 
+
+/*
+
+    A wrapper to allow [jQuery's `val` function](http://api.jquery.com/val/) to be accessed using the `evaluate`
+    function.  As with the  underlying jQuery function:
+
+        1.  If `valueOrFn` is omitted, the current value for the first element with selector `selector` will be returned.
+        2.  If `valueOrFn` is a non-function, all elements matching `selector` will have their value set to the supplied value.
+        3.  When setting values, the updated element(s) will be returned.
+
+    NOTE:
+        Unlike jQuery's `val` function, you cannot pass a client-side function and use its return value to set the
+        value. See: https://github.com/segmentio/nightmare/issues/89#issuecomment-102769448
+
+ */
+gpii.tests.browser.tests.val = function (selector, valueOrFn) {
+    return arguments.length > 1 ? $(selector).val(valueOrFn) : $(selector).val();
+};
+
 /*
 
     Function that uses Fluid to look up namespaced global variables according to their path.  Your client-side page must
