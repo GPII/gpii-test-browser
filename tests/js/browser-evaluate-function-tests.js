@@ -55,7 +55,7 @@ fluid.defaults("gpii.tests.browser.tests.evaluate", {
                 ]
             },
             {
-                name: "Test looking up the value of a single element...",
+                name: "Test looking up the value of a single element using `lookupFunction`...",
                 sequence: [
                     {
                         func: "{gpii.tests.browser.environment}.browser.goto",
@@ -127,6 +127,127 @@ fluid.defaults("gpii.tests.browser.tests.evaluate", {
                         listener: "jqUnit.assertDeepEq",
                         event:    "{gpii.tests.browser.environment}.browser.events.onEvaluateComplete",
                         args:     ["The values should be as expected...", ["one", "two", "three"], "{arguments}.0"]
+                    }
+                ]
+            },
+            {
+                name: "Test using getElementHtml without a function name...",
+                sequence: [
+                    {
+                        func: "{gpii.tests.browser.environment}.browser.goto",
+                        args: [testUrl]
+                    },
+                    {
+                        event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
+                        listener: "{gpii.tests.browser.environment}.browser.evaluate",
+                        args:     [gpii.tests.browser.tests.getElementHtml, ".singleHtml"]
+                    },
+                    {
+                        listener: "jqUnit.assertEquals",
+                        event:    "{gpii.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        args:     ["The selector's html value should be as expected...", "This is <b>html</b>.", "{arguments}.0"]
+                    }
+                ]
+            },
+            {
+                name: "Test using getElementHtml with a function name...",
+                sequence: [
+                    {
+                        func: "{gpii.tests.browser.environment}.browser.goto",
+                        args: [testUrl]
+                    },
+                    {
+                        event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
+                        listener: "{gpii.tests.browser.environment}.browser.evaluate",
+                        args:     [gpii.tests.browser.tests.getElementHtml, ".singleHtml", "next"]
+                    },
+                    {
+                        listener: "jqUnit.assertEquals",
+                        event:    "{gpii.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        args:     ["The next html value should be as expected...", "valueLookupFunction", "{arguments}.0"]
+                    }
+                ]
+            },
+            {
+                name: "Confirm a match using elementMatches with a function name...",
+                sequence: [
+                    {
+                        func: "{gpii.tests.browser.environment}.browser.goto",
+                        args: [testUrl]
+                    },
+                    {
+                        event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
+                        listener: "{gpii.tests.browser.environment}.browser.evaluate",
+                        args:     [gpii.tests.browser.tests.elementMatches, ".singleHtml", "l.+o.+tion", "next"] // "lookupValueFunction"
+                    },
+                    {
+                        listener: "jqUnit.assertTrue",
+                        event:    "{gpii.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        args:     ["There should be a match...", "{arguments}.0"]
+                    }
+                ]
+            },
+            {
+                name: "Confirm that content does not match using elementMatches with a function name...",
+                sequence: [
+                    {
+                        func: "{gpii.tests.browser.environment}.browser.goto",
+                        args: [testUrl]
+                    },
+                    {
+                        event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
+                        listener: "{gpii.tests.browser.environment}.browser.evaluate",
+                        args:     [gpii.tests.browser.tests.elementMatches, ".singleHtml", "not found", "next"]
+                    },
+                    {
+                        listener: "jqUnit.assertFalse",
+                        event:    "{gpii.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        args:     ["There should not be a match...", "{arguments}.0"]
+                    }
+                ]
+            },
+            // gpii.tests.browser.tests.evaluate.valTestFunction
+            // .singleValue
+            {
+                name: "Test looking up the value of a single element using `val`...",
+                sequence: [
+                    {
+                        func: "{gpii.tests.browser.environment}.browser.goto",
+                        args: [testUrl]
+                    },
+                    {
+                        event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
+                        listener: "{gpii.tests.browser.environment}.browser.evaluate",
+                        args:     [gpii.tests.browser.tests.val, ".singleValue"]
+                    },
+                    {
+                        listener: "jqUnit.assertEquals",
+                        event:    "{gpii.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        args:     ["The value should be as expected...", "one", "{arguments}.0"]
+                    }
+                ]
+            },
+            {
+                name: "Test setting the value of a single element using `val` and a regular value...",
+                sequence: [
+                    {
+                        func: "{gpii.tests.browser.environment}.browser.goto",
+                        args: [testUrl]
+                    },
+                    {
+                        event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
+                        listener: "{gpii.tests.browser.environment}.browser.evaluate",
+                        args:     [gpii.tests.browser.tests.val, ".singleValue", "something else"]
+                    },
+                    {
+                        event:    "{gpii.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        listener: "{gpii.tests.browser.environment}.browser.evaluate",
+                        args:     [gpii.tests.browser.tests.val, ".singleValue"]
+                    },
+                    {
+                        listener: "jqUnit.assertEquals",
+                        event:    "{gpii.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        args:     ["The value should have been updated...", "something else", "{arguments}.0"]
                     }
                 ]
             }
