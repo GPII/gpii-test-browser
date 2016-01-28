@@ -165,7 +165,7 @@ fluid.defaults("gpii.tests.browser.environment.withExpress", {
                     "onStarted.notifyEnvironment": {
                         func: "{gpii.tests.browser.environment.withExpress}.events.onExpressReady.fire"
                     },
-                    "afterDestroy.notifyEnvironment": {
+                    "onStopped.notifyEnvironment": {
                         func: "{gpii.tests.browser.environment.withExpress}.events.onExpressDone.fire"
                     }
                 }
