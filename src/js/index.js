@@ -247,9 +247,7 @@ fluid.defaults("gpii.tests.browser", {
         onDomReady: ["dom-ready"],
         onPageLog:  ["page-logged"]
     },
-    nightmareOptions: {
-        waitTimeout: 30000 // Required until release 2.1.4 of Nightmare is available.  See https://github.com/segmentio/nightmare/issues/453
-    },
+    nightmareOptions: {},
     listeners: {
         "onCreate.init": {
             funcName: "gpii.tests.browser.init",
