@@ -53,6 +53,44 @@ fluid.defaults("gpii.tests.browser.tests.type", {
                         args:      ["The text field should contain the updated value...", "this is new text...", "{arguments}.0"]
                     }
                 ]
+            },
+            {
+                name: "Test typing into two consecutive fields...",
+                sequence: [
+                    {
+                        func: "{gpii.tests.browser.environment}.browser.goto",
+                        args: [typeDemoUrl]
+                    },
+                    {
+                        event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
+                        listener: "{gpii.tests.browser.environment}.browser.type",
+                        args:     ["#textField2", "this is the value for field 2"]
+                    },
+                    {
+                        event:    "{gpii.tests.browser.environment}.browser.events.onTypeComplete",
+                        listener: "{gpii.tests.browser.environment}.browser.type",
+                        args:     ["#textField3", "this is the value for field 3"]
+                    },
+                    {
+                        event:    "{gpii.tests.browser.environment}.browser.events.onTypeComplete",
+                        listener: "{gpii.tests.browser.environment}.browser.evaluate",
+                        args:     [gpii.tests.browser.tests.lookupFunction, "#textField2", "value"]
+                    },
+                    {
+                        event:     "{gpii.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        listener: "jqUnit.assertEquals",
+                        args:      ["The second text field should contain the value input earlier...", "this is the value for field 2", "{arguments}.0"]
+                    },
+                    {
+                        func: "{gpii.tests.browser.environment}.browser.evaluate",
+                        args:     [gpii.tests.browser.tests.lookupFunction, "#textField3", "value"]
+                    },
+                    {
+                        event:     "{gpii.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        listener: "jqUnit.assertEquals",
+                        args:      ["The third text field should contain the value input earlier...", "this is the value for field 3", "{arguments}.0"]
+                    }
+                ]
             }
         ]
     }]
