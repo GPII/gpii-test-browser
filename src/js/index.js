@@ -94,25 +94,16 @@ gpii.tests.browser.init = function (that) {
     that.events.onReady.fire(that);
 };
 
-// TODO:  Review and see why the process must be killed.
+/*
+
+    Nightmare appears not to ever fire the completion function passed to all but the first `end(done)` call in a given
+    run.  For now, we disconnect it to avoid dropped IPC calls and kill it manually.
+
+ */
 gpii.tests.browser.end = function (that) {
-    that.nightmare.end();
-
-    // For some reason the "end" callback does not always execute, so we use an interval to take care of business
-    var millis = 0, intervalTimer = setInterval(function () {
-        millis += that.options.endInterval;
-        if (that.nightmare.ended) {
-            clearInterval(intervalTimer);
-            that.events.onEndComplete.fire(that);
-        } else if (millis > that.options.endTimeout) {
-            clearInterval(intervalTimer);
-
-            process.kill(that.nightmare.proc.pid);
-
-            fluid.log("Nightmare browser timed out and was killed manually....");
-            that.events.onEndComplete.fire(that);
-        }
-    }, that.options.endInterval);
+    that.nightmare.proc.disconnect();
+    process.kill(that.nightmare.proc.pid);
+    that.events.onEndComplete.fire(that);
 };
 
 /*
@@ -125,11 +116,11 @@ gpii.tests.browser.end = function (that) {
  */
 gpii.tests.browser.makeNightmareHandlerFunction = function (that, eventName, externalResult)  {
     return function (error, result) {
-        if (!result && externalResult) { result = externalResult; }
         if (error) {
             that.events.onError.fire(error);
-        } else {
-            that.events[eventName].fire(result);
+        }
+        else {
+            that.events[eventName].fire(result || externalResult);
         }
     };
 };
@@ -171,7 +162,7 @@ gpii.tests.browser.executeScreenshot = function (that, eventName, args) {
     }
 
     if (!argsArray[1]) {
-        argsArray[1] = { x: 1, y: 1, width: 1200, height: 800};
+        argsArray[1] = that.options.screenshotDefaults;
     }
 
     fluid.log("Saving screenshot to '" + argsArray[0] + "'...");
@@ -207,6 +198,7 @@ fluid.defaults("gpii.tests.browser", {
     gradeNames:  ["fluid.component"],
     endInterval: 500,
     endTimeout:  2500,
+    screenshotDefaults: { x: 1, y: 1, width: 1200, height: 800},
     events: {
         // Indicate that we are finished with our own startup process, including wiring listeners to all Nightmare events.
         onReady: null,
