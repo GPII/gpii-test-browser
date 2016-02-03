@@ -56,8 +56,6 @@ fluid.defaults("gpii.tests.browser.caseHolder.static", {
 fluid.defaults("gpii.tests.browser.caseHolder.withExpress", {
     gradeNames: ["gpii.tests.browser.caseHolder.withStandardStart"],
     // Manually kill off our fixtures when the tests are finished, and wait for them to die.
-    // TODO:  Review with Antranig, this does not seem to prevent "address in use" errors within a single test fixture,
-    // but only when running through `all-tests.js`.
     sequenceEnd: [
         {
             func: "{gpii.tests.browser.environment.withExpress}.express.stopServer"
