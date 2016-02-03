@@ -72,7 +72,7 @@ fluid.defaults("gpii.tests.browser.tests.visible", {
                     {
                         listener: "jqUnit.assertEquals",
                         event:    "{gpii.tests.browser.environment}.browser.events.onVisibleComplete",
-                        args:     ["A non-existent element should not be visible...", false, "{arguments}.0"]
+                        args:     ["A non-existent element should not be visible...", undefined, "{arguments}.0"]
                     }
                 ]
             }
