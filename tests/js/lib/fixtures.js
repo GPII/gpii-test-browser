@@ -60,7 +60,7 @@ fluid.defaults("gpii.tests.browser.caseHolder.withExpress", {
     // but only when running through `all-tests.js`.
     sequenceEnd: [
         {
-            func: "{gpii.tests.browser.environment.withExpress}.express.destroy"
+            func: "{gpii.tests.browser.environment.withExpress}.express.stopServer"
         },
         {
             func: "{gpii.tests.browser.environment.withExpress}.browser.end"
@@ -161,13 +161,21 @@ fluid.defaults("gpii.tests.browser.environment.withExpress", {
                         baseUrl: "{that}.options.baseUrl"
                     }
                 },
+                invokers: {
+                    "stopServer": {
+                        funcName: "gpii.express.stopServer",
+                        args:     ["{that}"]
+                    }
+                },
                 listeners: {
                     "onStarted.notifyEnvironment": {
                         func: "{gpii.tests.browser.environment.withExpress}.events.onExpressReady.fire"
                     },
                     "onStopped.notifyEnvironment": {
                         func: "{gpii.tests.browser.environment.withExpress}.events.onExpressDone.fire"
-                    }
+                    },
+                    // Disable the onDestroy listener inherited from gpii.express, as it will not result in a notification when the server is finally stopped.
+                    "onDestroy.stopServer": { funcName: "fluid.identity" }
                 }
             }
         }
