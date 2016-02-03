@@ -34,9 +34,16 @@ fluid.defaults("gpii.tests.browser.tests.screenshot", {
                         func: "{gpii.tests.browser.environment}.browser.goto",
                         args: [startUrl]
                     },
+                    // Screenshots appear to fail if they are taken too quickly.  TODO:  Investigate with Antranig.
+                    {
+                        listener: "{gpii.tests.browser.environment}.browser.wait",
+                        event:    "{gpii.tests.browser.environment}.browser.events.onLoaded",
+                        args:     [500]
+                    },
                     {
                         listener: "{gpii.tests.browser.environment}.browser.screenshot",
-                        event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete"
+                        event:    "{gpii.tests.browser.environment}.browser.events.onWaitComplete",
+                        args:     []
                     },
                     {
                         listener: "gpii.tests.browser.tests.screenshot.fileExists",
@@ -53,9 +60,15 @@ fluid.defaults("gpii.tests.browser.tests.screenshot", {
                         func: "{gpii.tests.browser.environment}.browser.goto",
                         args: [startUrl]
                     },
+                    // Screenshots appear to fail if they are taken too quickly.  TODO:  Investigate with Antranig.
+                    {
+                        listener: "{gpii.tests.browser.environment}.browser.wait",
+                        event:    "{gpii.tests.browser.environment}.browser.events.onLoaded",
+                        args:     [500]
+                    },
                     {
                         listener: "{gpii.tests.browser.environment}.browser.screenshot",
-                        event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
+                        event:    "{gpii.tests.browser.environment}.browser.events.onWaitComplete",
                         args:     [ null, { x: 1, y: 1, width: 100, height: 100}]
                     },
                     {
@@ -74,7 +87,8 @@ fluid.defaults("gpii.tests.browser.tests.screenshot", {
                     },
                     {
                         listener: "{gpii.tests.browser.environment}.browser.pdf",
-                        event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete"
+                        event:    "{gpii.tests.browser.environment}.browser.events.onLoaded",
+                        args:     []
                     },
                     {
                         listener: "gpii.tests.browser.tests.screenshot.fileExists",
