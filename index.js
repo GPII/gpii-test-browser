@@ -4,11 +4,21 @@
     optionally load testing support.
 
  */
+"use strict";
 var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 
 fluid.module.register("gpii-test-browser", __dirname, require);
 
-require("./src/js/index");
+require("./src/js/nightmare");
+require("./src/js/eventRelay");
+
+fluid.registerNamespace("gpii.tests.browser");
+
+gpii.tests.browser.loadTestingSupport = function () {
+    require("./tests/js/lib/fixtures");
+    require("./tests/js/lib/resolve-file-url");
+    require("./tests/js/lib/evaluate-client-functions");
+};
 
 module.exports = gpii.tests.browser;
