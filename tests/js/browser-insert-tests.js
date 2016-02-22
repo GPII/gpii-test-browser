@@ -17,7 +17,7 @@ fluid.defaults("gpii.tests.browser.tests.insert", {
     rawModules: [{
         tests: [
             {
-                name: "Test insertting into and clearing a form field...",
+                name: "Test inserting into and clearing a form field...",
                 sequence: [
                     {
                         func: "{gpii.tests.browser.environment}.browser.goto",
