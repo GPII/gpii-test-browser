@@ -19,6 +19,7 @@ require("./js/browser-exists-tests.js");
 require("./js/browser-fluid-tests.js");
 require("./js/browser-evaluate-function-tests.js");
 require("./js/browser-inject-tests");
+require("./js/browser-insert-tests");
 require("./js/browser-load-tests");
 require("./js/browser-navigation-tests.js");
 require("./js/browser-refresh-tests.js");
