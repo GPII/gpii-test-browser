@@ -223,6 +223,7 @@ fluid.defaults("gpii.tests.browser", {
         onInjectComplete: null,
         onInsertComplete: null,
         onEvaluateComplete: null,
+        onUncheckComplete: null,
         onWaitComplete: null,
         onExistsComplete: null,
         onVisibleComplete: null,
@@ -300,6 +301,10 @@ fluid.defaults("gpii.tests.browser", {
         insert: {
             funcName: "gpii.tests.browser.execute",
             args:     ["{that}", "onInsertComplete", "insert", "{arguments}"]
+        },
+        uncheck: {
+            funcName: "gpii.tests.browser.execute",
+            args:     ["{that}", "onUncheckComplete", "uncheck", "{arguments}"]
         },
         wait: {
             funcName: "gpii.tests.browser.execute",
