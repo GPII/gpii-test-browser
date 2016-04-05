@@ -153,12 +153,6 @@ fluid.defaults("gpii.tests.browser.environment.withExpress", {
                         args: ["http://localhost:%port/", { port: "{that}.options.port"}]
                     }
                 },
-                config:  {
-                    express: {
-                        port:    "{that}.options.port",
-                        baseUrl: "{that}.options.baseUrl"
-                    }
-                },
                 invokers: {
                     "stopServer": {
                         funcName: "gpii.express.stopServer",
