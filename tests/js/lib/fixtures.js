@@ -15,7 +15,7 @@ express.loadTestingSupport();
 //
 fluid.defaults("gpii.tests.browser.caseHolder.base", {
     // Extend the express grade that gives us the standard sequence auto-wiring.
-    gradeNames: ["gpii.express.tests.caseHolder.base"]
+    gradeNames: ["gpii.tests.express.caseHolder.base"]
 });
 
 

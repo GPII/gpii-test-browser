@@ -14,17 +14,13 @@ var ipcDemoUrl = gpii.tests.browser.tests.resolveFileUrl("%gpii-test-browser/tes
 fluid.registerNamespace("gpii.tests.browser.tests.ipc");
 
 gpii.tests.browser.tests.ipc.crudelyFireEvent = function (browser, selector, eventName) {
-    browser.nightmare.on("page-error", function () {
-        console.log("I got a CANDYGRAM!");
-    });
-
     browser.evaluate(function (selector, eventName) {
-        var component = gpii.tests.browser.eventRelaySource();
+        //var component = gpii.tests.browser.eventRelaySource();
 
-        //var matchingComponents = fluid.queryIoCSelector(fluid.rootComponent, selector);
-        //fluid.each(matchingComponents, function (component) {
-        component.events[eventName].fire("This is coming from the client side.");
-        //});
+        var matchingComponents = fluid.queryIoCSelector(fluid.rootComponent, selector);
+        fluid.each(matchingComponents, function (component) {
+            component.events[eventName].fire("This is coming from the client side.");
+        });
     }, selector, eventName);
 };
 
@@ -36,18 +32,23 @@ fluid.defaults("gpii.tests.browser.tests.ipc", {
                 name: "Test IPC communication...",
                 sequence: [
                     {
-                        func: "{gpii.tests.browser.environment}.browser.goto",
+                        func: "{gpii.tests.browser.environment}.events.constructFixtures.fire"
+                    },
+                    {
+                        event:    "{gpii.tests.browser.environment}.browser.events.onReady",
+                        listener: "{gpii.tests.browser.environment}.browser.goto",
                         args: [ipcDemoUrl]
                     },
                     {
                         event:    "{gpii.tests.browser.environment}.browser.events.onLoaded",
                         listener: "gpii.tests.browser.tests.ipc.crudelyFireEvent",
-                        args:     ["{gpii.tests.browser.environment}.browser", "gpii.tests.browser.eventRelaySource", "onSendMessage"]
+                        args:     ["{gpii.tests.browser.environment}.browser", "gpii.tests.browser.eventRelaySource", "onArbitraryEvent"]
                     },
                     {
-                        event:    "{gpii.tests.browser.environment}.browser.events.onMessageReceived",
+                        event:    "{gpii.tests.browser.environment}.eventRelayTarget.events.onArbitraryEvent",
                         listener: "jqUnit.assertEquals",
-                        args:     ["This is coming from the client side.", "{arguments}.0"]
+                        args:     ["The client side payload should be visible...", "This is coming from the client side.", "{arguments}.0"]
+
                     }
                 ]
             }
@@ -58,12 +59,18 @@ fluid.defaults("gpii.tests.browser.tests.ipc", {
 gpii.tests.browser.environment({
     components: {
         browser: {
-            type: "gpii.tests.browser.eventRelayTarget.browser",
+            type: "gpii.tests.browser.eventRelay.browserWithMultiplexer",
             options: {
-                listeners: {
-                    "onError.log": {
-                        funcName: "console.log",
-                        args:     ["BROWSER ERROR:", "{arguments}.0"]
+                components: {
+                    eventRelayTarget: {
+                        type: "gpii.tests.browser.eventRelay.target",
+                        options: {
+                            sourceSelector: "gpii.tests.browser.eventRelaySource",
+                            sourceEvents: ["onArbitraryEvent"],
+                            events: {
+                                onArbitraryEvent: null
+                            }
+                        }
                     }
                 }
             }

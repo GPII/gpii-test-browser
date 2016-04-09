@@ -16,7 +16,11 @@
 
         <script type="text/javascript">
 //            require("ipc");
-//            var eventRelaySource = gpii.tests.browser.eventRelaySource();
+            var eventRelaySource = gpii.tests.browser.eventRelaySource({
+                events: {
+                    onArbitraryEvent: null
+                }
+            });
         </script>
     </body>
 </html>

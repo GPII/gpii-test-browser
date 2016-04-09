@@ -11,12 +11,12 @@
 
     [
         {
-            func: "{testEnvironment}.eventRelaySource.events.eventName.fire",
+            func: "{testEnvironment}.eventRelay.source.events.eventName.fire",
             args: [ ... ]
         },
         {
             listener: "your.namespaced.function.or.invoker",
-            event: "{testEnvironment}.eventRelayTarget.events.eventName",
+            event: "{testEnvironment}.eventRelay.target.events.eventName",
             args: [ ... ]
         }
     ]
@@ -26,47 +26,70 @@
 var fluid = fluid || require("infusion");
 var gpii = fluid.registerNamespace("gpii");
 
-fluid.registerNamespace("gpii.tests.browser.eventRelaySource");
-
-//gpii.tests.browser.eventRelaySource.getIpc = function () {
-//    if (__Nightmare && __Nightmare.ipc) {
-//        return __Nightmare.ipc
-//    }
-//    else  {
-//        return require("ipc");
-//    }
-//};
-
-//var ipc = gpii.tests.browser.eventRelaySource.getIpc();
+fluid.registerNamespace("gpii.tests.browser.eventRelay.source");
 
 /* globals __nightmare */
-gpii.tests.browser.eventRelaySource.send = function (message) {
+gpii.tests.browser.eventRelay.source.relayFunction = function (targetId, eventName, args) {
     if (__nightmare && __nightmare.ipc) {
-
-        __nightmare.ipc.send("page-error", "foo");
-        __nightmare.ipc.send("page", "error", "foo", "bar");
-        __nightmare.ipc.send("candyGram", message);
-        //fluid.fail("SENDINGGGGGG");
+        __nightmare.ipc.sendSync("page", "event", { targetId: targetId, eventName: eventName, args: args});
     }
     else {
         fluid.fail("No IPC functionality available, cannot send messsage...");
     }
 };
 
-fluid.defaults("gpii.tests.browser.eventRelaySource", {
+gpii.tests.browser.eventRelay.source.wireRelayListeners = function (that, targetId, eventNames) {
+    fluid.each(eventNames, function (eventName) {
+        that.events[eventName].addListener(function () { gpii.tests.browser.eventRelay.source.relayFunction(targetId, eventNames, arguments); });
+    });
+};
+
+fluid.defaults("gpii.tests.browser.eventRelay.source", {
+    gradeNames: ["fluid.component"]
+});
+
+fluid.registerNamespace("gpii.tests.browser.eventRelay.target");
+
+fluid.defaults("gpii.tests.browser.eventRelay.target", {
     gradeNames: ["fluid.component"],
-    events: {
-        onSendMessage: null
-    },
+    // sourceSelector: A string identifying the `eventRelay.source` we will be relaying events from.
+    // sourceEvents: A block of options that describe the `events` the source instance supports.
     listeners: {
-        "onSendMessage": {
-            funcName: "gpii.tests.browser.eventRelaySource.send",
-            args:     ["{arguments}.0"]
+        "onCreate.registerTarget": {
+            "func": "{gpii.tests.browser.eventRelay.multiplexer}.registerTarget",
+            "args": ["{that}"]
         }
     }
 });
 
-fluid.defaults("gpii.tests.browser.eventRelayTarget", {
+fluid.registerNamespace("gpii.tests.browser.eventRelay.multiplexer");
+gpii.tests.browser.eventRelay.multiplexer.listenForIpcMessages = function (that) {
+    that.nightmare.child.on("page", function () {
+        that.handleIpcMessage.apply(null, arguments);
+    });
+};
+
+gpii.tests.browser.eventRelay.multiplexer.registerTarget = function (multiplexerThat, targetThat) {
+    gpii.tests.browser.eventRelay.multiplexer.connectSource(multiplexerThat, targetThat.id, targetThat.options.sourceSelector, targetThat.options.sourceEvents);
+};
+
+gpii.tests.browser.eventRelay.multiplexer.connectSource = function (that, targetId, sourceSelector, eventNames) {
+    that.evaluate(function (targetId, sourceSelector, eventNames) {
+        var matchingComponents = fluid.queryIoCSelector(fluid.rootComponent, sourceSelector);
+        fluid.each(matchingComponents, function (component) {
+            gpii.tests.browser.eventRelay.source.wireRelayListeners(component, targetId, eventNames);
+        });
+    }, targetId, sourceSelector, eventNames);
+};
+
+gpii.tests.browser.eventRelay.multiplexer.unpackMessage = function (that, bundleToUnpack) {
+    // { targetId: targetId, eventName: eventName, args: args}
+    var instantiatior = fluid.getInstantiator(that);
+    var shadow = instantiatior.idToShadow(bundleToUnpack.targetId);
+    shadow.that.events[bundleToUnpack.eventName].fire.apply(null, bundleToUnpack.args);
+};
+
+fluid.defaults("gpii.tests.browser.eventRelay.multiplexer", {
     gradeNames: ["fluid.component"],
     events: {
         onMessageReceived: null
@@ -74,27 +97,29 @@ fluid.defaults("gpii.tests.browser.eventRelayTarget", {
     invokers: {
         handleIpcMessage: {
             func: "{that}.events.onMessageReceived.fire",
-            args: ["{arguments}.0"]
+            args: ["{arguments}.2"]
+        },
+        registerTarget: {
+            funcName: "gpii.tests.browser.eventRelay.multiplexer.registerTarget",
+            args: ["{that}", "{arguments}.0"]
+        },
+        connectSource: {
+            funcName: "gpii.tests.browser.eventRelay.multiplexer.connectSource",
+            args:     ["{that}", "{arguments}.0", "{arguments}.1"]
         }
     },
     listeners: {
         "onCreate.listenForIpcMessages": {
-            funcName: "fluid.notImplemented"
+            funcName: "gpii.tests.browser.eventRelay.multiplexer.listenForIpcMessages",
+            args:     ["{that}"]
+        },
+        "onMessageReceived.unpackMessage": {
+            funcName: "gpii.tests.browser.eventRelay.multiplexer.unpackMessage",
+            args:     ["{that}", "{arguments}.0"]
         }
     }
 });
 
-fluid.registerNamespace("gpii.tests.browser.eventRelayTarget.browser");
-gpii.tests.browser.eventRelayTarget.browser.listenForIpcMessages = function (that) {
-    that.nightmare.child.on("page-error", that.handleIpcMessage);
-};
-
-fluid.defaults("gpii.tests.browser.eventRelayTarget.browser", {
-    gradeNames: ["gpii.tests.browser", "gpii.tests.browser.eventRelayTarget"],
-    listeners: {
-        "onCreate.listenForIpcMessages": {
-            funcName: "gpii.tests.browser.eventRelayTarget.browser.listenForIpcMessages",
-            args:     ["{that}"]
-        }
-    }
+fluid.defaults("gpii.tests.browser.eventRelay.browserWithMultiplexer", {
+    gradeNames: ["gpii.tests.browser", "gpii.tests.browser.eventRelay.multiplexer"]
 });
