@@ -8,30 +8,30 @@ var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 
 require("../../index");
-gpii.tests.browser.loadTestingSupport();
+gpii.test.browser.loadTestingSupport();
 
-var goodUrl = gpii.tests.browser.tests.resolveFileUrl("%gpii-test-browser/tests/static/html/second.html");
-var badUrl  = gpii.tests.browser.tests.resolveFileUrl("%gpii-test-browser/tests/static/html/bogus.html");
+var goodUrl = gpii.test.browser.resolveFileUrl("%gpii-test-browser/tests/static/html/second.html");
+var badUrl  = gpii.test.browser.resolveFileUrl("%gpii-test-browser/tests/static/html/bogus.html");
 
-fluid.defaults("gpii.tests.browser.tests.load", {
-    gradeNames: ["gpii.tests.browser.caseHolder.static"],
+fluid.defaults("gpii.tests.browser.load", {
+    gradeNames: ["gpii.test.browser.caseHolder.static"],
     rawModules: [{
         tests: [
             {
                 name: "Test loading a file that exists...",
                 sequence: [
                     {
-                        func: "{gpii.tests.browser.environment}.browser.goto",
+                        func: "{gpii.test.browser.environment}.browser.goto",
                         args: [goodUrl]
                     },
                     {
-                        event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
-                        listener: "{gpii.tests.browser.environment}.browser.evaluate",
-                        args:     [gpii.tests.browser.tests.lookupFunction, "body", "innerText"]
+                        event:    "{gpii.test.browser.environment}.browser.events.onGotoComplete",
+                        listener: "{gpii.test.browser.environment}.browser.evaluate",
+                        args:     [gpii.test.browser.lookupFunction, "body", "innerText"]
                     },
                     {
                         listener: "jqUnit.assertEquals",
-                        event:    "{gpii.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        event:    "{gpii.test.browser.environment}.browser.events.onEvaluateComplete",
                         args:     ["The body should be as expected...", "This is the second page.", "{arguments}.0"]
                     }
                 ]
@@ -40,12 +40,12 @@ fluid.defaults("gpii.tests.browser.tests.load", {
                 name: "Test loading a file that does not exist...",
                 sequence: [
                     {
-                        func: "{gpii.tests.browser.environment}.browser.goto",
+                        func: "{gpii.test.browser.environment}.browser.goto",
                         args: [badUrl]
                     },
                     {
                         listener: "jqUnit.assertNotUndefined",
-                        event:    "{gpii.tests.browser.environment}.browser.events.onError",
+                        event:    "{gpii.test.browser.environment}.browser.events.onError",
                         args:     ["An error should have been thrown...", "{arguments}.0"]
                     }
                 ]
@@ -54,10 +54,10 @@ fluid.defaults("gpii.tests.browser.tests.load", {
     }]
 });
 
-gpii.tests.browser.environment({
+gpii.test.browser.environment({
     components: {
         caseHolder: {
-            type: "gpii.tests.browser.tests.load"
+            type: "gpii.tests.browser.load"
         }
     }
 });

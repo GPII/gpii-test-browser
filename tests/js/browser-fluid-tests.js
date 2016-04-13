@@ -8,28 +8,28 @@ var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 
 require("../../index");
-gpii.tests.browser.loadTestingSupport();
+gpii.test.browser.loadTestingSupport();
 
-var testUrl = gpii.tests.browser.tests.resolveFileUrl("%gpii-test-browser/tests/static/html/fluid.html");
+var testUrl = gpii.test.browser.resolveFileUrl("%gpii-test-browser/tests/static/html/fluid.html");
 
-fluid.defaults("gpii.tests.browser.tests.fluid", {
-    gradeNames: ["gpii.tests.browser.caseHolder.static"],
+fluid.defaults("gpii.tests.browser.fluid", {
+    gradeNames: ["gpii.test.browser.caseHolder.static"],
     rawModules: [{
         tests: [
             {
                 name: "Test looking up the document title...",
                 sequence: [
                     {
-                        func: "{gpii.tests.browser.environment}.browser.goto",
+                        func: "{gpii.test.browser.environment}.browser.goto",
                         args: [testUrl]
                     },
                     {
-                        event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
-                        listener: "{gpii.tests.browser.environment}.browser.evaluate",
-                        args:     [gpii.tests.browser.tests.getGlobalValue, "document.title"]
+                        event:    "{gpii.test.browser.environment}.browser.events.onGotoComplete",
+                        listener: "{gpii.test.browser.environment}.browser.evaluate",
+                        args:     [gpii.test.browser.getGlobalValue, "document.title"]
                     },
                     {
-                        event:    "{gpii.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        event:    "{gpii.test.browser.environment}.browser.events.onEvaluateComplete",
                         listener: "jqUnit.assertEquals",
                         args:     ["The title should be as expected...", "Fluid component test...", "{arguments}.0"]
                     }
@@ -39,16 +39,16 @@ fluid.defaults("gpii.tests.browser.tests.fluid", {
                 name: "Test inspecting a fluid component's model data...",
                 sequence: [
                     {
-                        func: "{gpii.tests.browser.environment}.browser.goto",
+                        func: "{gpii.test.browser.environment}.browser.goto",
                         args: [testUrl]
                     },
                     {
-                        event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
-                        listener: "{gpii.tests.browser.environment}.browser.evaluate",
-                        args:     [gpii.tests.browser.tests.getGlobalValue, "component.model.count"]
+                        event:    "{gpii.test.browser.environment}.browser.events.onGotoComplete",
+                        listener: "{gpii.test.browser.environment}.browser.evaluate",
+                        args:     [gpii.test.browser.getGlobalValue, "component.model.count"]
                     },
                     {
-                        event:    "{gpii.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        event:    "{gpii.test.browser.environment}.browser.events.onEvaluateComplete",
                         listener: "jqUnit.assertEquals",
                         args:     ["The title should be as expected...", 1, "{arguments}.0"]
                     }
@@ -58,10 +58,10 @@ fluid.defaults("gpii.tests.browser.tests.fluid", {
     }]
 });
 
-gpii.tests.browser.environment({
+gpii.test.browser.environment({
     components: {
         caseHolder: {
-            type: "gpii.tests.browser.tests.fluid"
+            type: "gpii.tests.browser.fluid"
         }
     }
 });

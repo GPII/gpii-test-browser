@@ -11,8 +11,8 @@ var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 var url   = require("url");
 
-fluid.registerNamespace("gpii.tests.browser.tests");
+fluid.registerNamespace("gpii.test.browser");
 
-gpii.tests.browser.tests.resolveFileUrl = function (path) {
+gpii.test.browser.resolveFileUrl = function (path) {
     return url.resolve("file://", fluid.module.resolvePath(path));
 };

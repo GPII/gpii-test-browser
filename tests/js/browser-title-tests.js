@@ -8,28 +8,28 @@ var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 
 require("../../index");
-gpii.tests.browser.loadTestingSupport();
+gpii.test.browser.loadTestingSupport();
 
-var goodUrl = gpii.tests.browser.tests.resolveFileUrl("%gpii-test-browser/tests/static/html/index.html");
+var goodUrl = gpii.test.browser.resolveFileUrl("%gpii-test-browser/tests/static/html/index.html");
 
-fluid.defaults("gpii.tests.browser.tests.title", {
-    gradeNames: ["gpii.tests.browser.caseHolder.static"],
+fluid.defaults("gpii.tests.browser.title", {
+    gradeNames: ["gpii.test.browser.caseHolder.static"],
     rawModules: [{
         tests: [
             {
                 name: "Test querying the title of a sample page...",
                 sequence: [
                     {
-                        func: "{gpii.tests.browser.environment}.browser.goto",
+                        func: "{gpii.test.browser.environment}.browser.goto",
                         args: [goodUrl]
                     },
                     {
-                        event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
-                        listener: "{gpii.tests.browser.environment}.browser.title"
+                        event:    "{gpii.test.browser.environment}.browser.events.onGotoComplete",
+                        listener: "{gpii.test.browser.environment}.browser.title"
                     },
                     {
                         listener: "jqUnit.assertEquals",
-                        event:    "{gpii.tests.browser.environment}.browser.events.onTitleComplete",
+                        event:    "{gpii.test.browser.environment}.browser.events.onTitleComplete",
                         args:     ["The title should be as expected...", "Test environment for exercising Nightmare", "{arguments}.0"]
                     }
                 ]
@@ -38,10 +38,10 @@ fluid.defaults("gpii.tests.browser.tests.title", {
     }]
 });
 
-gpii.tests.browser.environment({
+gpii.test.browser.environment({
     components: {
         caseHolder: {
-            type: "gpii.tests.browser.tests.title"
+            type: "gpii.tests.browser.title"
         }
     }
 });

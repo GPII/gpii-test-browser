@@ -8,37 +8,37 @@ var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 
 require("../../index");
-gpii.tests.browser.loadTestingSupport();
+gpii.test.browser.loadTestingSupport();
 
 var path           = require("path");
 var injectedJsPath = path.resolve(__dirname, "../static/js/inject.js");
 
-var injectUrl = gpii.tests.browser.tests.resolveFileUrl("%gpii-test-browser/tests/static/html/inject.html");
+var injectUrl = gpii.test.browser.resolveFileUrl("%gpii-test-browser/tests/static/html/inject.html");
 
-fluid.defaults("gpii.tests.browser.tests.inject", {
-    gradeNames: ["gpii.tests.browser.caseHolder.static"],
+fluid.defaults("gpii.tests.browser.inject", {
+    gradeNames: ["gpii.test.browser.caseHolder.static"],
     rawModules: [{
         tests: [
             {
                 name: "Test injecting javascript content into a document...",
                 sequence: [
                     {
-                        func: "{gpii.tests.browser.environment}.browser.goto",
+                        func: "{gpii.test.browser.environment}.browser.goto",
                         args: [injectUrl]
                     },
                     {
-                        event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
-                        listener: "{gpii.tests.browser.environment}.browser.inject",
+                        event:    "{gpii.test.browser.environment}.browser.events.onGotoComplete",
+                        listener: "{gpii.test.browser.environment}.browser.inject",
                         args:     ["js", injectedJsPath]
                     },
                     {
-                        event:    "{gpii.tests.browser.environment}.browser.events.onInjectComplete",
-                        listener: "{gpii.tests.browser.environment}.browser.evaluate",
-                        args:     [gpii.tests.browser.tests.lookupFunction, "body", "innerText"]
+                        event:    "{gpii.test.browser.environment}.browser.events.onInjectComplete",
+                        listener: "{gpii.test.browser.environment}.browser.evaluate",
+                        args:     [gpii.test.browser.lookupFunction, "body", "innerText"]
                     },
                     {
                         listener: "jqUnit.assertEquals",
-                        event:    "{gpii.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        event:    "{gpii.test.browser.environment}.browser.events.onEvaluateComplete",
                         args:     ["The body should be as expected...", "The body has been updated.", "{arguments}.0"]
                     }
                 ]
@@ -47,10 +47,10 @@ fluid.defaults("gpii.tests.browser.tests.inject", {
     }]
 });
 
-gpii.tests.browser.environment({
+gpii.test.browser.environment({
     components: {
         caseHolder: {
-            type: "gpii.tests.browser.tests.inject"
+            type: "gpii.tests.browser.inject"
         }
     }
 });

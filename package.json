@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "cookie": "^0.2.0",
-    "gpii-express": "git://github.com/the-t-in-rtf/gpii-express#05fb6c9559891f3cbab94ee7f018c0c9847b25fe",
+    "gpii-express": "git://github.com/the-t-in-rtf/gpii-express#d687a10d9da2ba72d1e819ae94484ca98295c8c2",
     "grunt": "0.4.4",
     "grunt-contrib-jshint": "0.9.0",
     "grunt-jsonlint": "1.0.4",

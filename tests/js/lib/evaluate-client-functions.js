@@ -2,7 +2,7 @@
 var fluid = fluid || require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 
-fluid.registerNamespace("gpii.tests.browser.tests");
+fluid.registerNamespace("gpii.test.browser");
 /* globals $, fluid */
 /*
 
@@ -12,12 +12,12 @@ fluid.registerNamespace("gpii.tests.browser.tests");
 
     ```
     {
-        event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
-        listener: "{gpii.tests.browser.environment}.browser.evaluate",
-        args:     [gpii.tests.browser.tests.lookupFunction, "body", "innerText"]
+        event:    "{gpii.test.browser.environment}.browser.events.onGotoComplete",
+        listener: "{gpii.test.browser.environment}.browser.evaluate",
+        args:     [gpii.test.browser.lookupFunction, "body", "innerText"]
     },
     {
-        event:    "{gpii.tests.browser.environment}.browser.events.onEvaluateComplete",
+        event:    "{gpii.test.browser.environment}.browser.events.onEvaluateComplete",
         listener: "jqUnit.assertEquals",
         args:     ["The body should be as expected...", "foo", "{arguments}.0"]
     }
@@ -26,7 +26,7 @@ fluid.registerNamespace("gpii.tests.browser.tests");
     `lookupFunction` is the only function that does not require either `jQuery` or `fluid` on the client side.
  */
 
-gpii.tests.browser.tests.lookupFunction = function (selector, fnName) {
+gpii.test.browser.lookupFunction = function (selector, fnName) {
     /* globals document */
     var elements = document.querySelectorAll(selector), results  = [];
     for (var a = 0; a < elements.length; a++) {
@@ -61,7 +61,7 @@ gpii.tests.browser.tests.lookupFunction = function (selector, fnName) {
  As with jQuery itself, if there are multiple matches, `fnName` will only be executed against the first match.
 
  */
-gpii.tests.browser.tests.getElementHtml = function (selector, fnName) {
+gpii.test.browser.getElementHtml = function (selector, fnName) {
     var element = fnName ? $(selector)[fnName]() : $(selector);
     return element.html();
 };
@@ -80,7 +80,7 @@ gpii.tests.browser.tests.getElementHtml = function (selector, fnName) {
  If the element with the given selector does not exist or does not have the named function, an error will be thrown.
 
  */
-gpii.tests.browser.tests.elementMatches = function (selector, patternString, fnName) {
+gpii.test.browser.elementMatches = function (selector, patternString, fnName) {
     var element = fnName ? $(selector)[fnName]() : $(selector);
     return Boolean(element.html().match(new RegExp(patternString, "mi")));
 };
@@ -100,7 +100,7 @@ gpii.tests.browser.tests.elementMatches = function (selector, patternString, fnN
         value. See: https://github.com/segmentio/nightmare/issues/89#issuecomment-102769448
 
  */
-gpii.tests.browser.tests.val = function (selector, valueOrFn) {
+gpii.test.browser.val = function (selector, valueOrFn) {
     return arguments.length > 1 ? $(selector).val(valueOrFn) : $(selector).val();
 };
 
@@ -112,12 +112,12 @@ gpii.tests.browser.tests.val = function (selector, valueOrFn) {
 
      ```
      {
-         event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
-         listener: "{gpii.tests.browser.environment}.browser.evaluate",
-         args:     [gpii.tests.browser.tests.getGlobalValue, "document.title"]
+         event:    "{gpii.test.browser.environment}.browser.events.onGotoComplete",
+         listener: "{gpii.test.browser.environment}.browser.evaluate",
+         args:     [gpii.test.browser.getGlobalValue, "document.title"]
      },
      {
-         event:    "{gpii.tests.browser.environment}.browser.events.onEvaluateComplete",
+         event:    "{gpii.test.browser.environment}.browser.events.onEvaluateComplete",
          listener: "jqUnit.assertEquals",
          args:     ["The title should be as expected...", "Test environment for exercising evaluation functions...", "{arguments}.0"]
      }
@@ -125,7 +125,7 @@ gpii.tests.browser.tests.val = function (selector, valueOrFn) {
 
     For more details, check out `browser-fluid-tests.js`.
  */
-gpii.tests.browser.tests.getGlobalValue = function (path) {
+gpii.test.browser.getGlobalValue = function (path) {
     return fluid.getGlobalValue(path);
 };
 

@@ -8,33 +8,33 @@ var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 
 require("../../index");
-gpii.tests.browser.loadTestingSupport();
+gpii.test.browser.loadTestingSupport();
 
-var typeDemoUrl = gpii.tests.browser.tests.resolveFileUrl("%gpii-test-browser/tests/static/html/select.html");
+var typeDemoUrl = gpii.test.browser.resolveFileUrl("%gpii-test-browser/tests/static/html/select.html");
 
-fluid.defaults("gpii.tests.browser.tests.select", {
-    gradeNames: ["gpii.tests.browser.caseHolder.static"],
+fluid.defaults("gpii.tests.browser.select", {
+    gradeNames: ["gpii.test.browser.caseHolder.static"],
     rawModules: [{
         tests: [
             {
                 name: "Test selecting a simple option as a string...",
                 sequence: [
                     {
-                        func: "{gpii.tests.browser.environment}.browser.goto",
+                        func: "{gpii.test.browser.environment}.browser.goto",
                         args: [typeDemoUrl]
                     },
                     {
-                        event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
-                        listener: "{gpii.tests.browser.environment}.browser.select",
+                        event:    "{gpii.test.browser.environment}.browser.events.onGotoComplete",
+                        listener: "{gpii.test.browser.environment}.browser.select",
                         args:     ["select", "2"]
                     },
                     {
-                        event:    "{gpii.tests.browser.environment}.browser.events.onSelectComplete",
-                        listener: "{gpii.tests.browser.environment}.browser.evaluate",
-                        args:     [gpii.tests.browser.tests.lookupFunction, "select", "value"]
+                        event:    "{gpii.test.browser.environment}.browser.events.onSelectComplete",
+                        listener: "{gpii.test.browser.environment}.browser.evaluate",
+                        args:     [gpii.test.browser.lookupFunction, "select", "value"]
                     },
                     {
-                        event:    "{gpii.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        event:    "{gpii.test.browser.environment}.browser.events.onEvaluateComplete",
                         listener: "jqUnit.assertEquals",
                         args:     ["The select should be set to the right value...", "2", "{arguments}.0"]
                     }
@@ -44,21 +44,21 @@ fluid.defaults("gpii.tests.browser.tests.select", {
                 name: "Test selecting a simple option as a number...",
                 sequence: [
                     {
-                        func: "{gpii.tests.browser.environment}.browser.goto",
+                        func: "{gpii.test.browser.environment}.browser.goto",
                         args: [typeDemoUrl]
                     },
                     {
-                        event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
-                        listener: "{gpii.tests.browser.environment}.browser.select",
+                        event:    "{gpii.test.browser.environment}.browser.events.onGotoComplete",
+                        listener: "{gpii.test.browser.environment}.browser.select",
                         args:     ["select", 2]
                     },
                     {
-                        event:    "{gpii.tests.browser.environment}.browser.events.onSelectComplete",
-                        listener: "{gpii.tests.browser.environment}.browser.evaluate",
-                        args:     [gpii.tests.browser.tests.lookupFunction, "select", "value"]
+                        event:    "{gpii.test.browser.environment}.browser.events.onSelectComplete",
+                        listener: "{gpii.test.browser.environment}.browser.evaluate",
+                        args:     [gpii.test.browser.lookupFunction, "select", "value"]
                     },
                     {
-                        event:    "{gpii.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        event:    "{gpii.test.browser.environment}.browser.events.onEvaluateComplete",
                         listener: "jqUnit.assertEquals",
                         args:     ["The select should be set to the right value...", "2", "{arguments}.0"]
                     }
@@ -68,10 +68,10 @@ fluid.defaults("gpii.tests.browser.tests.select", {
     }]
 });
 
-gpii.tests.browser.environment({
+gpii.test.browser.environment({
     components: {
         caseHolder: {
-            type: "gpii.tests.browser.tests.select"
+            type: "gpii.tests.browser.select"
         }
     }
 });

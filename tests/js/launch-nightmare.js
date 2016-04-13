@@ -17,7 +17,7 @@ var pagePath = path.resolve(__dirname, "../static/html/launch.html");
 var url = require("url");
 var startUrl = url.resolve("file://", pagePath);
 
-gpii.tests.browser({
+gpii.test.browser({
     startUrl: startUrl,
     nightmareOptions: { show: true, dock: true},
     listeners: {

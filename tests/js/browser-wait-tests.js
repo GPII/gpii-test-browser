@@ -8,43 +8,43 @@ var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 
 require("../../index");
-gpii.tests.browser.loadTestingSupport();
+gpii.test.browser.loadTestingSupport();
 
-var waitUrl = gpii.tests.browser.tests.resolveFileUrl("%gpii-test-browser/tests/static/html/wait.html");
+var waitUrl = gpii.test.browser.resolveFileUrl("%gpii-test-browser/tests/static/html/wait.html");
 
-fluid.defaults("gpii.tests.browser.tests.wait", {
-    gradeNames: ["gpii.tests.browser.caseHolder.static"],
+fluid.defaults("gpii.tests.browser.wait", {
+    gradeNames: ["gpii.test.browser.caseHolder.static"],
     rawModules: [{
         tests: [
             {
                 name: "Test waiting for dynamic content...",
                 sequence: [
                     {
-                        func: "{gpii.tests.browser.environment}.browser.goto",
+                        func: "{gpii.test.browser.environment}.browser.goto",
                         args: [waitUrl]
                     },
                     {
-                        event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
-                        listener: "{gpii.tests.browser.environment}.browser.evaluate",
-                        args:     [gpii.tests.browser.tests.lookupFunction, "#waiting", "innerText"]
+                        event:    "{gpii.test.browser.environment}.browser.events.onGotoComplete",
+                        listener: "{gpii.test.browser.environment}.browser.evaluate",
+                        args:     [gpii.test.browser.lookupFunction, "#waiting", "innerText"]
                     },
                     {
                         listener: "jqUnit.assertEquals",
-                        event:    "{gpii.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        event:    "{gpii.test.browser.environment}.browser.events.onEvaluateComplete",
                         args:     ["The body should be as expected...", "The table has not yet been set.", "{arguments}.0"]
                     },
                     {
-                        func: "{gpii.tests.browser.environment}.browser.wait",
+                        func: "{gpii.test.browser.environment}.browser.wait",
                         args: [500]
                     },
                     {
-                        event:    "{gpii.tests.browser.environment}.browser.events.onWaitComplete",
-                        listener: "{gpii.tests.browser.environment}.browser.evaluate",
-                        args:     [gpii.tests.browser.tests.lookupFunction, "#waiting", "innerText"]
+                        event:    "{gpii.test.browser.environment}.browser.events.onWaitComplete",
+                        listener: "{gpii.test.browser.environment}.browser.evaluate",
+                        args:     [gpii.test.browser.lookupFunction, "#waiting", "innerText"]
                     },
                     {
                         listener: "jqUnit.assertEquals",
-                        event:    "{gpii.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        event:    "{gpii.test.browser.environment}.browser.events.onEvaluateComplete",
                         args:     ["The body should be as expected...", "The table has been set.", "{arguments}.0"]
                     }
                 ]
@@ -53,10 +53,10 @@ fluid.defaults("gpii.tests.browser.tests.wait", {
     }]
 });
 
-gpii.tests.browser.environment({
+gpii.test.browser.environment({
     components: {
         caseHolder: {
-            type: "gpii.tests.browser.tests.wait"
+            type: "gpii.tests.browser.wait"
         }
     }
 });

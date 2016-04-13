@@ -67,9 +67,9 @@
 var fluid = require("infusion");
 var gpii = fluid.registerNamespace("gpii");
 
-fluid.registerNamespace("gpii.tests.browser");
+fluid.registerNamespace("gpii.test.browser");
 
-gpii.tests.browser.loadTestingSupport = function () {
+gpii.test.browser.loadTestingSupport = function () {
     require("../../tests/js/lib/fixtures");
     require("../../tests/js/lib/resolve-file-url");
     require("../../tests/js/lib/evaluate-client-functions");
@@ -79,7 +79,7 @@ var Nightmare = require("nightmare");
 var os        = require("os");
 var path      = require("path");
 
-gpii.tests.browser.init = function (that) {
+gpii.test.browser.init = function (that) {
     that.nightmare = new Nightmare(that.options.nightmareOptions);
 
     fluid.each(that.options.eventBindings, function (rawEventOrEvents, fluidEvent) {
@@ -100,7 +100,7 @@ gpii.tests.browser.init = function (that) {
     run.  For now, we disconnect it to avoid dropped IPC calls and kill it manually.
 
  */
-gpii.tests.browser.end = function (that) {
+gpii.test.browser.end = function (that) {
     that.nightmare.proc.disconnect();
     process.kill(that.nightmare.proc.pid);
     that.events.onEndComplete.fire(that);
@@ -114,7 +114,7 @@ gpii.tests.browser.end = function (that) {
     passed to the event if there are no errors and if Nightmare itself does not return a result.
 
  */
-gpii.tests.browser.makeNightmareHandlerFunction = function (that, eventName, externalResult)  {
+gpii.test.browser.makeNightmareHandlerFunction = function (that, eventName, externalResult)  {
     return function (error, result) {
         if (error) {
             that.events.onError.fire(error);
@@ -131,9 +131,9 @@ gpii.tests.browser.makeNightmareHandlerFunction = function (that, eventName, ext
     firing an 'onError' event with any errors or firing `eventName` with any results.
 
  */
-gpii.tests.browser.execute = function (that, eventName, fnName, args) {
+gpii.test.browser.execute = function (that, eventName, fnName, args) {
     var argsArray = args ? fluid.makeArray(args) : [];
-    that.nightmare[fnName].apply(that.nightmare, argsArray).run(gpii.tests.browser.makeNightmareHandlerFunction(that, eventName));
+    that.nightmare[fnName].apply(that.nightmare, argsArray).run(gpii.test.browser.makeNightmareHandlerFunction(that, eventName));
 };
 
 /*
@@ -141,7 +141,7 @@ gpii.tests.browser.execute = function (that, eventName, fnName, args) {
     Generate the path to a file in the temp directory.  Used as the default for screenshots and PDFs.
 
  */
-gpii.tests.browser.generateTempFilePath = function (tag, extension) {
+gpii.test.browser.generateTempFilePath = function (tag, extension) {
     return path.resolve(os.tmpdir(), tag + "-" + (new Date()).getTime() + "." + extension);
 };
 
@@ -155,10 +155,10 @@ gpii.tests.browser.generateTempFilePath = function (tag, extension) {
     You can override the file location and clipping options by passing in your own `args`.
 
  */
-gpii.tests.browser.executeScreenshot = function (that, eventName, args) {
+gpii.test.browser.executeScreenshot = function (that, eventName, args) {
     var argsArray = fluid.makeArray(args);
     if (!argsArray[0]) {
-        argsArray[0] = gpii.tests.browser.generateTempFilePath("screenshot", "png");
+        argsArray[0] = gpii.test.browser.generateTempFilePath("screenshot", "png");
     }
 
     if (!argsArray[1]) {
@@ -166,7 +166,7 @@ gpii.tests.browser.executeScreenshot = function (that, eventName, args) {
     }
 
     fluid.log("Saving screenshot to '" + argsArray[0] + "'...");
-    that.nightmare.screenshot.apply(that.nightmare, argsArray).run(gpii.tests.browser.makeNightmareHandlerFunction(that, eventName, argsArray[0]));
+    that.nightmare.screenshot.apply(that.nightmare, argsArray).run(gpii.test.browser.makeNightmareHandlerFunction(that, eventName, argsArray[0]));
 };
 
 /*
@@ -179,22 +179,22 @@ gpii.tests.browser.executeScreenshot = function (that, eventName, args) {
     You can supply your own filename (and any PDF options) by passing in your own `args`.
 
  */
-gpii.tests.browser.executePdf = function (that, eventName, args) {
+gpii.test.browser.executePdf = function (that, eventName, args) {
     var argsArray = fluid.makeArray(args);
     if (!argsArray[0]) {
-        argsArray[0] = gpii.tests.browser.generateTempFilePath("pdf", "pdf");
+        argsArray[0] = gpii.test.browser.generateTempFilePath("pdf", "pdf");
     }
 
     fluid.log("Saving PDF file to '" + argsArray[0] + "'...");
-    that.nightmare.pdf.apply(that.nightmare, argsArray).run(gpii.tests.browser.makeNightmareHandlerFunction(that, eventName, argsArray[0]));
+    that.nightmare.pdf.apply(that.nightmare, argsArray).run(gpii.test.browser.makeNightmareHandlerFunction(that, eventName, argsArray[0]));
 };
 
 // TODO:  Implement this once this issue is resolved -> https://github.com/segmentio/nightmare/issues/244
-//gpii.tests.browser.sendKey = function (that, keyCode) {
+//gpii.test.browser.sendKey = function (that, keyCode) {
 //};
 
 
-fluid.defaults("gpii.tests.browser", {
+fluid.defaults("gpii.test.browser", {
     gradeNames:  ["fluid.component"],
     endInterval: 500,
     endTimeout:  2500,
@@ -244,102 +244,102 @@ fluid.defaults("gpii.tests.browser", {
     nightmareOptions: {},
     listeners: {
         "onCreate.init": {
-            funcName: "gpii.tests.browser.init",
+            funcName: "gpii.test.browser.init",
             args:     ["{that}"]
         }
     },
     invokers: {
         // Functions that take action and then return the current `document`.
         "goto": {
-            funcName: "gpii.tests.browser.execute",
+            funcName: "gpii.test.browser.execute",
             args:     ["{that}", "onGotoComplete", "goto", "{arguments}"]
         },
         back: {
-            funcName: "gpii.tests.browser.execute",
+            funcName: "gpii.test.browser.execute",
             args:     ["{that}", "onBackComplete", "back", "{arguments}"]
         },
         evaluate: {
-            funcName: "gpii.tests.browser.execute",
+            funcName: "gpii.test.browser.execute",
             args:     ["{that}", "onEvaluateComplete", "evaluate", "{arguments}"]
         },
         forward: {
-            funcName: "gpii.tests.browser.execute",
+            funcName: "gpii.test.browser.execute",
             args:     ["{that}", "onForwardComplete", "forward", "{arguments}"]
         },
         refresh: {
-            funcName: "gpii.tests.browser.execute",
+            funcName: "gpii.test.browser.execute",
             args:     ["{that}", "onRefreshComplete", "refresh", "{arguments}"]
         },
         end: {
-            funcName: "gpii.tests.browser.end",
+            funcName: "gpii.test.browser.end",
             args:     ["{that}"]
         },
         click: {
-            funcName: "gpii.tests.browser.execute",
+            funcName: "gpii.test.browser.execute",
             args:     ["{that}", "onClickComplete", "click", "{arguments}"]
         },
         type: {
-            funcName: "gpii.tests.browser.execute",
+            funcName: "gpii.test.browser.execute",
             args: ["{that}", "onTypeComplete", "type", "{arguments}"]
         },
         check: {
-            funcName: "gpii.tests.browser.execute",
+            funcName: "gpii.test.browser.execute",
             args:     ["{that}", "onCheckComplete", "check", "{arguments}"]
         },
         select: {
-            funcName: "gpii.tests.browser.execute",
+            funcName: "gpii.test.browser.execute",
             args:     ["{that}", "onSelectComplete", "select", "{arguments}"]
         },
         scrollTo: {
-            funcName: "gpii.tests.browser.execute",
+            funcName: "gpii.test.browser.execute",
             args:     ["{that}", "onScrollToComplete", "scrollTo", "{arguments}"]
         },
         inject: {
-            funcName: "gpii.tests.browser.execute",
+            funcName: "gpii.test.browser.execute",
             args:     ["{that}", "onInjectComplete", "inject", "{arguments}"]
         },
         insert: {
-            funcName: "gpii.tests.browser.execute",
+            funcName: "gpii.test.browser.execute",
             args:     ["{that}", "onInsertComplete", "insert", "{arguments}"]
         },
         uncheck: {
-            funcName: "gpii.tests.browser.execute",
+            funcName: "gpii.test.browser.execute",
             args:     ["{that}", "onUncheckComplete", "uncheck", "{arguments}"]
         },
         wait: {
-            funcName: "gpii.tests.browser.execute",
+            funcName: "gpii.test.browser.execute",
             args:     ["{that}", "onWaitComplete", "wait", "{arguments}"]
         },
         exists: {
-            funcName: "gpii.tests.browser.execute",
+            funcName: "gpii.test.browser.execute",
             args:     ["{that}", "onExistsComplete", "exists", "{arguments}"]
         },
         // Functions that return a native value.
         visible: {
-            funcName: "gpii.tests.browser.execute",
+            funcName: "gpii.test.browser.execute",
             args:     ["{that}", "onVisibleComplete", "visible", "{arguments}"]
         },
         title: {
-            funcName: "gpii.tests.browser.execute",
+            funcName: "gpii.test.browser.execute",
             args:     ["{that}", "onTitleComplete", "title"]
         },
         url: {
-            funcName: "gpii.tests.browser.execute",
+            funcName: "gpii.test.browser.execute",
             args:     ["{that}", "onUrlComplete", "url"]
         },
         // Functions that return the path to a saved screen shot.
         screenshot: {
-            funcName: "gpii.tests.browser.executeScreenshot",
+            funcName: "gpii.test.browser.executeScreenshot",
             args: ["{that}", "onScreenshotComplete", "{arguments}"]
         },
         pdf: {
-            funcName: "gpii.tests.browser.executePdf",
+            funcName: "gpii.test.browser.executePdf",
             args: ["{that}", "onPdfComplete", "{arguments}"]
         }
         //,
         //// End wrappers for Nightmare functions, begin our custom value-add functions.
         //sendKey: {
-        //    funcName: "gpii.tests.browser.sendKey",
+        //    funcName: "gpii.test.browser.sendKey",
         //    args:     ["{that}", "{arguments}.0"] // keyCode
         //}
 

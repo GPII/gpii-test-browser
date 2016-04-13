@@ -8,57 +8,57 @@ var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 
 require("../../index");
-gpii.tests.browser.loadTestingSupport();
+gpii.test.browser.loadTestingSupport();
 
-var startUrl = gpii.tests.browser.tests.resolveFileUrl("%gpii-test-browser/tests/static/html/click.html");
+var startUrl = gpii.test.browser.resolveFileUrl("%gpii-test-browser/tests/static/html/click.html");
 
-fluid.defaults("gpii.tests.browser.tests.navigation", {
-    gradeNames: ["gpii.tests.browser.caseHolder.static"],
+fluid.defaults("gpii.tests.browser.navigation", {
+    gradeNames: ["gpii.test.browser.caseHolder.static"],
     rawModules: [{
         tests: [
             {
                 name: "Test navigating backwards and forwards...",
                 sequence: [
                     {
-                        func: "{gpii.tests.browser.environment}.browser.goto",
+                        func: "{gpii.test.browser.environment}.browser.goto",
                         args: [startUrl]
                     },
                     {
-                        listener: "{gpii.tests.browser.environment}.browser.click",
-                        event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
+                        listener: "{gpii.test.browser.environment}.browser.click",
+                        event:    "{gpii.test.browser.environment}.browser.events.onGotoComplete",
                         args:     ["a"]
                     },
                     {
-                        event:    "{gpii.tests.browser.environment}.browser.events.onClickComplete",
-                        listener: "{gpii.tests.browser.environment}.browser.title"
+                        event:    "{gpii.test.browser.environment}.browser.events.onClickComplete",
+                        listener: "{gpii.test.browser.environment}.browser.title"
                     },
                     {
                         listener: "jqUnit.assertEquals",
-                        event:    "{gpii.tests.browser.environment}.browser.events.onTitleComplete",
+                        event:    "{gpii.test.browser.environment}.browser.events.onTitleComplete",
                         args:     ["We should be back on the second page...", "Second Test Page", "{arguments}.0"]
                     },
                     {
-                        func: "{gpii.tests.browser.environment}.browser.back"
+                        func: "{gpii.test.browser.environment}.browser.back"
                     },
                     {
-                        event:    "{gpii.tests.browser.environment}.browser.events.onBackComplete",
-                        listener: "{gpii.tests.browser.environment}.browser.title"
+                        event:    "{gpii.test.browser.environment}.browser.events.onBackComplete",
+                        listener: "{gpii.test.browser.environment}.browser.title"
                     },
                     {
                         listener: "jqUnit.assertEquals",
-                        event:    "{gpii.tests.browser.environment}.browser.events.onTitleComplete",
+                        event:    "{gpii.test.browser.environment}.browser.events.onTitleComplete",
                         args:     ["We should be back on the first page...", "Click Test", "{arguments}.0"]
                     },
                     {
-                        func: "{gpii.tests.browser.environment}.browser.forward"
+                        func: "{gpii.test.browser.environment}.browser.forward"
                     },
                     {
-                        event:    "{gpii.tests.browser.environment}.browser.events.onForwardComplete",
-                        listener: "{gpii.tests.browser.environment}.browser.title"
+                        event:    "{gpii.test.browser.environment}.browser.events.onForwardComplete",
+                        listener: "{gpii.test.browser.environment}.browser.title"
                     },
                     {
                         listener: "jqUnit.assertEquals",
-                        event:    "{gpii.tests.browser.environment}.browser.events.onTitleComplete",
+                        event:    "{gpii.test.browser.environment}.browser.events.onTitleComplete",
                         args:     ["We should be back on the second page...", "Second Test Page", "{arguments}.0"]
                     }
                 ]
@@ -67,10 +67,10 @@ fluid.defaults("gpii.tests.browser.tests.navigation", {
     }]
 });
 
-gpii.tests.browser.environment({
+gpii.test.browser.environment({
     components: {
         caseHolder: {
-            type: "gpii.tests.browser.tests.navigation"
+            type: "gpii.tests.browser.navigation"
         }
     }
 });

@@ -13,12 +13,12 @@ fluid.module.register("gpii-test-browser", __dirname, require);
 require("./src/js/nightmare");
 require("./src/js/eventRelay");
 
-fluid.registerNamespace("gpii.tests.browser");
+fluid.registerNamespace("gpii.test.browser");
 
-gpii.tests.browser.loadTestingSupport = function () {
+gpii.test.browser.loadTestingSupport = function () {
     require("./tests/js/lib/fixtures");
     require("./tests/js/lib/resolve-file-url");
     require("./tests/js/lib/evaluate-client-functions");
 };
 
-module.exports = gpii.tests.browser;
+module.exports = gpii.test.browser;

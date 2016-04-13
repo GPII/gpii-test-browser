@@ -8,29 +8,29 @@ var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 
 require("../../index");
-gpii.tests.browser.loadTestingSupport();
+gpii.test.browser.loadTestingSupport();
 
-var goodUrl = gpii.tests.browser.tests.resolveFileUrl("%gpii-test-browser/tests/static/html/visible.html");
+var goodUrl = gpii.test.browser.resolveFileUrl("%gpii-test-browser/tests/static/html/visible.html");
 
-fluid.defaults("gpii.tests.browser.tests.visible", {
-    gradeNames: ["gpii.tests.browser.caseHolder.static"],
+fluid.defaults("gpii.tests.browser.visible", {
+    gradeNames: ["gpii.test.browser.caseHolder.static"],
     rawModules: [{
         tests: [
             {
                 name: "Examine a visible element...",
                 sequence: [
                     {
-                        func: "{gpii.tests.browser.environment}.browser.goto",
+                        func: "{gpii.test.browser.environment}.browser.goto",
                         args: [goodUrl]
                     },
                     {
-                        event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
-                        listener: "{gpii.tests.browser.environment}.browser.visible",
+                        event:    "{gpii.test.browser.environment}.browser.events.onGotoComplete",
+                        listener: "{gpii.test.browser.environment}.browser.visible",
                         args:     ["#visible"]
                     },
                     {
                         listener: "jqUnit.assertTrue",
-                        event:    "{gpii.tests.browser.environment}.browser.events.onVisibleComplete",
+                        event:    "{gpii.test.browser.environment}.browser.events.onVisibleComplete",
                         args:     ["The #visible element should be visible...", "{arguments}.0"]
                     }
                 ]
@@ -39,17 +39,17 @@ fluid.defaults("gpii.tests.browser.tests.visible", {
                 name: "Examine an hidden element...",
                 sequence: [
                     {
-                        func: "{gpii.tests.browser.environment}.browser.goto",
+                        func: "{gpii.test.browser.environment}.browser.goto",
                         args: [goodUrl]
                     },
                     {
-                        event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
-                        listener: "{gpii.tests.browser.environment}.browser.visible",
+                        event:    "{gpii.test.browser.environment}.browser.events.onGotoComplete",
+                        listener: "{gpii.test.browser.environment}.browser.visible",
                         args:     ["#invisible"]
                     },
                     {
                         listener: "jqUnit.assertFalse",
-                        event:    "{gpii.tests.browser.environment}.browser.events.onVisibleComplete",
+                        event:    "{gpii.test.browser.environment}.browser.events.onVisibleComplete",
                         args:     ["The #invisible element should be invisible...", "{arguments}.0"]
                     }
                 ]
@@ -61,17 +61,17 @@ fluid.defaults("gpii.tests.browser.tests.visible", {
                 name: "Check the visibility of an element that doesn't exist...",
                 sequence: [
                     {
-                        func: "{gpii.tests.browser.environment}.browser.goto",
+                        func: "{gpii.test.browser.environment}.browser.goto",
                         args: [goodUrl]
                     },
                     {
-                        event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
-                        listener: "{gpii.tests.browser.environment}.browser.visible",
+                        event:    "{gpii.test.browser.environment}.browser.events.onGotoComplete",
+                        listener: "{gpii.test.browser.environment}.browser.visible",
                         args:     ["#notNobodyNotNohow"]
                     },
                     {
                         listener: "jqUnit.assertEquals",
-                        event:    "{gpii.tests.browser.environment}.browser.events.onVisibleComplete",
+                        event:    "{gpii.test.browser.environment}.browser.events.onVisibleComplete",
                         args:     ["A non-existent element should not be visible...", undefined, "{arguments}.0"]
                     }
                 ]
@@ -80,10 +80,10 @@ fluid.defaults("gpii.tests.browser.tests.visible", {
     }]
 });
 
-gpii.tests.browser.environment({
+gpii.test.browser.environment({
     components: {
         caseHolder: {
-            type: "gpii.tests.browser.tests.visible"
+            type: "gpii.tests.browser.visible"
         }
     }
 });

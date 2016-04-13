@@ -14,37 +14,37 @@ var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 
 require("../../index");
-gpii.tests.browser.loadTestingSupport();
+gpii.test.browser.loadTestingSupport();
 
-var goodUrl = gpii.tests.browser.tests.resolveFileUrl("%gpii-test-browser/tests/static/html/index.html");
+var goodUrl = gpii.test.browser.resolveFileUrl("%gpii-test-browser/tests/static/html/index.html");
 
-fluid.defaults("gpii.tests.browser.tests.url", {
-    gradeNames: ["gpii.tests.browser.caseHolder.static"],
+fluid.defaults("gpii.tests.browser.url", {
+    gradeNames: ["gpii.test.browser.caseHolder.static"],
     rawModules: [{
         tests: [
             {
                 name: "Test querying the URL of a sample page...",
                 sequence: [
                     {
-                        func: "{gpii.tests.browser.environment}.browser.goto",
+                        func: "{gpii.test.browser.environment}.browser.goto",
                         args: [goodUrl]
                     },
                     {
-                        event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
-                        listener: "{gpii.tests.browser.environment}.browser.url"
+                        event:    "{gpii.test.browser.environment}.browser.events.onGotoComplete",
+                        listener: "{gpii.test.browser.environment}.browser.url"
                     },
                     {
-                        event:    "{gpii.tests.browser.environment}.browser.events.onUrlComplete",
-                        listener: "{gpii.tests.browser.environment}.browser.goto",
+                        event:    "{gpii.test.browser.environment}.browser.events.onUrlComplete",
+                        listener: "{gpii.test.browser.environment}.browser.goto",
                         args:     ["{arguments}.0"]
                     },
                     {
-                        event:    "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
-                        listener: "{gpii.tests.browser.environment}.browser.title"
+                        event:    "{gpii.test.browser.environment}.browser.events.onGotoComplete",
+                        listener: "{gpii.test.browser.environment}.browser.title"
                     },
                     {
                         listener: "jqUnit.assertEquals",
-                        event:    "{gpii.tests.browser.environment}.browser.events.onTitleComplete",
+                        event:    "{gpii.test.browser.environment}.browser.events.onTitleComplete",
                         args:     ["The title of the final destination should be as expected...", "Test environment for exercising Nightmare", "{arguments}.0"]
                     }
                 ]
@@ -53,10 +53,10 @@ fluid.defaults("gpii.tests.browser.tests.url", {
     }]
 });
 
-gpii.tests.browser.environment({
+gpii.test.browser.environment({
     components: {
         caseHolder: {
-            type: "gpii.tests.browser.tests.url"
+            type: "gpii.tests.browser.url"
         }
     }
 });

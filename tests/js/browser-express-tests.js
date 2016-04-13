@@ -10,10 +10,10 @@ var gpii  = fluid.registerNamespace("gpii");
 require("gpii-express");
 
 require("../../");
-gpii.tests.browser.loadTestingSupport();
+gpii.test.browser.loadTestingSupport();
 
 
-fluid.defaults("gpii.tests.browser.tests.express.handler", {
+fluid.defaults("gpii.tests.browser.express.handler", {
     gradeNames: ["gpii.express.handler"],
     invokers: {
         handleRequest: {
@@ -23,31 +23,31 @@ fluid.defaults("gpii.tests.browser.tests.express.handler", {
     }
 });
 
-fluid.defaults("gpii.tests.browser.tests.express.router", {
-    gradeNames: ["gpii.express.requestAware.router"],
+fluid.defaults("gpii.tests.browser.express.middleware", {
+    gradeNames: ["gpii.express.middleware.requestAware"],
     path: "/",
-    handlerGrades: ["gpii.tests.browser.tests.express.handler"]
+    handlerGrades: ["gpii.tests.browser.express.handler"]
 });
 
-fluid.defaults("gpii.tests.browser.tests.express", {
-    gradeNames: ["gpii.tests.browser.caseHolder.withExpress"],
+fluid.defaults("gpii.tests.browser.express", {
+    gradeNames: ["gpii.test.browser.caseHolder.withExpress"],
     rawModules: [{
         tests: [
             {
                 name: "Confirm that express content is loaded as expected...",
                 sequence: [
                     {
-                        func: "{gpii.tests.browser.environment}.browser.goto",
-                        args: ["{gpii.tests.browser.environment}.express.options.baseUrl"]
+                        func: "{gpii.test.browser.environment}.browser.goto",
+                        args: ["{gpii.test.browser.environment}.express.options.baseUrl"]
                     },
                     {
-                        event: "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
-                        listener: "{gpii.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.tests.browser.tests.lookupFunction, "body", "innerText"]
+                        event: "{gpii.test.browser.environment}.browser.events.onGotoComplete",
+                        listener: "{gpii.test.browser.environment}.browser.evaluate",
+                        args: [gpii.test.browser.lookupFunction, "body", "innerText"]
                     },
                     {
                         listener: "jqUnit.assertEquals",
-                        event: "{gpii.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        event: "{gpii.test.browser.environment}.browser.events.onEvaluateComplete",
                         args: ["The body should be as expected...", "Hello, indifferent universe.", "{arguments}.0"]
                     }
                 ]
@@ -56,17 +56,17 @@ fluid.defaults("gpii.tests.browser.tests.express", {
                 name: "Confirm that content can be loaded from a second test...",
                 sequence: [
                     {
-                        func: "{gpii.tests.browser.environment}.browser.goto",
-                        args: ["{gpii.tests.browser.environment}.express.options.baseUrl"]
+                        func: "{gpii.test.browser.environment}.browser.goto",
+                        args: ["{gpii.test.browser.environment}.express.options.baseUrl"]
                     },
                     {
-                        event: "{gpii.tests.browser.environment}.browser.events.onGotoComplete",
-                        listener: "{gpii.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.tests.browser.tests.lookupFunction, "body", "innerText"]
+                        event: "{gpii.test.browser.environment}.browser.events.onGotoComplete",
+                        listener: "{gpii.test.browser.environment}.browser.evaluate",
+                        args: [gpii.test.browser.lookupFunction, "body", "innerText"]
                     },
                     {
                         listener: "jqUnit.assertEquals",
-                        event: "{gpii.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        event: "{gpii.test.browser.environment}.browser.events.onEvaluateComplete",
                         args: ["The body should be as expected...", "Hello, indifferent universe.", "{arguments}.0"]
                     }
                 ]
@@ -75,16 +75,16 @@ fluid.defaults("gpii.tests.browser.tests.express", {
     }]
 });
 
-gpii.tests.browser.environment.withExpress({
+gpii.test.browser.environment.withExpress({
     components: {
         caseHolder: {
-            type: "gpii.tests.browser.tests.express"
+            type: "gpii.tests.browser.express"
         },
         express: {
             options: {
                 components: {
                     router: {
-                        type: "gpii.tests.browser.tests.express.router"
+                        type: "gpii.tests.browser.express.middleware"
                     }
                 }
             }
