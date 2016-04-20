@@ -8,14 +8,14 @@ var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 
 require("../../");
-gpii.tests.browser.loadTestingSupport();
-var ipcDemoUrl = gpii.tests.browser.tests.resolveFileUrl("%gpii-test-browser/tests/static/html/ipc.html");
+gpii.test.browser.loadTestingSupport();
+var ipcDemoUrl = gpii.test.browser.resolveFileUrl("%gpii-test-browser/tests/static/html/ipc.html");
 
-fluid.registerNamespace("gpii.tests.browser.tests.ipc");
+fluid.registerNamespace("gpii.tests.browser.ipc");
 
-gpii.tests.browser.tests.ipc.crudelyFireEvent = function (browser, selector, eventName) {
+gpii.tests.browser.ipc.crudelyFireEvent = function (browser, selector, eventName) {
     browser.evaluate(function (selector, eventName) {
-        //var component = gpii.tests.browser.eventRelaySource();
+        //var component = gpii.test.browser.eventRelaySource();
 
         var matchingComponents = fluid.queryIoCSelector(fluid.rootComponent, selector);
         fluid.each(matchingComponents, function (component) {
@@ -24,28 +24,28 @@ gpii.tests.browser.tests.ipc.crudelyFireEvent = function (browser, selector, eve
     }, selector, eventName);
 };
 
-fluid.defaults("gpii.tests.browser.tests.ipc", {
-    gradeNames: ["gpii.tests.browser.caseHolder.static"],
+fluid.defaults("gpii.tests.browser.ipc", {
+    gradeNames: ["gpii.test.browser.caseHolder.static"],
     rawModules: [{
         tests: [
             {
                 name: "Test IPC communication...",
                 sequence: [
                     {
-                        func: "{gpii.tests.browser.environment}.events.constructFixtures.fire"
+                        func: "{gpii.test.browser.environment}.events.constructFixtures.fire"
                     },
                     {
-                        event:    "{gpii.tests.browser.environment}.browser.events.onReady",
-                        listener: "{gpii.tests.browser.environment}.browser.goto",
+                        event:    "{gpii.test.browser.environment}.browser.events.onReady",
+                        listener: "{gpii.test.browser.environment}.browser.goto",
                         args: [ipcDemoUrl]
                     },
                     {
-                        event:    "{gpii.tests.browser.environment}.browser.events.onLoaded",
-                        listener: "gpii.tests.browser.tests.ipc.crudelyFireEvent",
-                        args:     ["{gpii.tests.browser.environment}.browser", "gpii.tests.browser.eventRelaySource", "onArbitraryEvent"]
+                        event:    "{gpii.test.browser.environment}.browser.events.onLoaded",
+                        listener: "gpii.tests.browser.ipc.crudelyFireEvent",
+                        args:     ["{gpii.test.browser.environment}.browser", "gpii.test.browser.eventRelaySource", "onArbitraryEvent"]
                     },
                     {
-                        event:    "{gpii.tests.browser.environment}.eventRelayTarget.events.onArbitraryEvent",
+                        event:    "{gpii.test.browser.environment}.eventRelayTarget.events.onArbitraryEvent",
                         listener: "jqUnit.assertEquals",
                         args:     ["The client side payload should be visible...", "This is coming from the client side.", "{arguments}.0"]
 
@@ -56,16 +56,16 @@ fluid.defaults("gpii.tests.browser.tests.ipc", {
     }]
 });
 
-gpii.tests.browser.environment({
+gpii.test.browser.environment({
     components: {
         browser: {
-            type: "gpii.tests.browser.eventRelay.browserWithMultiplexer",
+            type: "gpii.test.browser.eventRelay.browserWithMultiplexer",
             options: {
                 components: {
                     eventRelayTarget: {
-                        type: "gpii.tests.browser.eventRelay.target",
+                        type: "gpii.test.browser.eventRelay.target",
                         options: {
-                            sourceSelector: "gpii.tests.browser.eventRelaySource",
+                            sourceSelector: "gpii.test.browser.eventRelaySource",
                             sourceEvents: ["onArbitraryEvent"],
                             events: {
                                 onArbitraryEvent: null
@@ -76,7 +76,7 @@ gpii.tests.browser.environment({
             }
         },
         caseHolder: {
-            type: "gpii.tests.browser.tests.ipc"
+            type: "gpii.tests.browser.ipc"
         }
     }
 });
