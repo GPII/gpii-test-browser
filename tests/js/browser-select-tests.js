@@ -12,9 +12,10 @@ gpii.test.browser.loadTestingSupport();
 
 var typeDemoUrl = gpii.test.browser.resolveFileUrl("%gpii-test-browser/tests/static/html/select.html");
 
-fluid.defaults("gpii.tests.browser.select", {
+fluid.defaults("gpii.tests.browser.select.caseHolder", {
     gradeNames: ["gpii.test.browser.caseHolder.static"],
     rawModules: [{
+        name: "Testing `select` function...",
         tests: [
             {
                 name: "Test selecting a simple option as a string...",
@@ -68,10 +69,13 @@ fluid.defaults("gpii.tests.browser.select", {
     }]
 });
 
-gpii.test.browser.environment({
+fluid.defaults("gpii.tests.browser.select.testEnvironment", {
+    gradeNames: ["gpii.test.browser.environment"],
     components: {
         caseHolder: {
-            type: "gpii.tests.browser.select"
+            type: "gpii.tests.browser.select.caseHolder"
         }
     }
 });
+
+fluid.test.runTests("gpii.tests.browser.select.testEnvironment");

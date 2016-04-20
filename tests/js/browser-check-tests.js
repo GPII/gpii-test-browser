@@ -12,9 +12,10 @@ gpii.test.browser.loadTestingSupport();
 
 var typeDemoUrl = gpii.test.browser.resolveFileUrl("%gpii-test-browser/tests/static/html/check.html");
 
-fluid.defaults("gpii.tests.browser.check", {
+fluid.defaults("gpii.tests.browser.check.caseHolder", {
     gradeNames: ["gpii.test.browser.caseHolder.static"],
     rawModules: [{
+        name: "Testing the `check` function...",
         tests: [
             {
                 name: "Test checking a checkbox...",
@@ -110,10 +111,13 @@ fluid.defaults("gpii.tests.browser.check", {
     }]
 });
 
-gpii.test.browser.environment({
+fluid.defaults("gpii.tests.browser.check.testEnvironment", {
+    gradeNames: ["gpii.test.browser.environment"],
     components: {
         caseHolder: {
-            type: "gpii.tests.browser.check"
+            type: "gpii.tests.browser.check.caseHolder"
         }
     }
 });
+
+fluid.test.runTests("gpii.tests.browser.check.testEnvironment");

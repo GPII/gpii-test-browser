@@ -29,9 +29,10 @@ fluid.defaults("gpii.tests.browser.express.middleware", {
     handlerGrades: ["gpii.tests.browser.express.handler"]
 });
 
-fluid.defaults("gpii.tests.browser.express", {
+fluid.defaults("gpii.tests.browser.express.caseHolder", {
     gradeNames: ["gpii.test.browser.caseHolder.withExpress"],
     rawModules: [{
+        name:  "Testing the browser in combination with `gpii.express`...",
         tests: [
             {
                 name: "Confirm that express content is loaded as expected...",
@@ -75,10 +76,11 @@ fluid.defaults("gpii.tests.browser.express", {
     }]
 });
 
-gpii.test.browser.environment.withExpress({
+fluid.defaults("gpii.tests.browser.express.testEnvironment", {
+    gradeNames: ["gpii.test.browser.environment.withExpress"],
     components: {
         caseHolder: {
-            type: "gpii.tests.browser.express"
+            type: "gpii.tests.browser.express.caseHolder"
         },
         express: {
             options: {
@@ -91,3 +93,5 @@ gpii.test.browser.environment.withExpress({
         }
     }
 });
+
+fluid.test.runTests("gpii.tests.browser.express.testEnvironment");

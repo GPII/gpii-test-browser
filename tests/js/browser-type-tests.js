@@ -12,9 +12,10 @@ gpii.test.browser.loadTestingSupport();
 
 var typeDemoUrl = gpii.test.browser.resolveFileUrl("%gpii-test-browser/tests/static/html/type.html");
 
-fluid.defaults("gpii.tests.browser.type", {
+fluid.defaults("gpii.tests.browser.type.caseHolder", {
     gradeNames: ["gpii.test.browser.caseHolder.static"],
     rawModules: [{
+        name: "Testing `type` function...",
         tests: [
             {
                 name: "Test typing into a form field...",
@@ -96,10 +97,13 @@ fluid.defaults("gpii.tests.browser.type", {
     }]
 });
 
-gpii.test.browser.environment({
+fluid.defaults("gpii.tests.browser.type.testEnvironment", {
+    gradeNames: ["gpii.test.browser.environment"],
     components: {
         caseHolder: {
-            type: "gpii.tests.browser.type"
+            type: "gpii.tests.browser.type.caseHolder"
         }
     }
 });
+
+fluid.test.runTests("gpii.tests.browser.type.testEnvironment");

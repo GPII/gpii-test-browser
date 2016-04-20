@@ -12,9 +12,10 @@ gpii.test.browser.loadTestingSupport();
 
 var goodUrl = gpii.test.browser.resolveFileUrl("%gpii-test-browser/tests/static/html/index.html");
 
-fluid.defaults("gpii.tests.browser.title", {
+fluid.defaults("gpii.tests.browser.title.caseHolder", {
     gradeNames: ["gpii.test.browser.caseHolder.static"],
     rawModules: [{
+        name: "Testing `title` function...",
         tests: [
             {
                 name: "Test querying the title of a sample page...",
@@ -38,10 +39,13 @@ fluid.defaults("gpii.tests.browser.title", {
     }]
 });
 
-gpii.test.browser.environment({
+fluid.defaults("gpii.tests.browser.title.testEnvironment", {
+    gradeNames: ["gpii.test.browser.environment"],
     components: {
         caseHolder: {
-            type: "gpii.tests.browser.title"
+            type: "gpii.tests.browser.title.caseHolder"
         }
     }
 });
+
+fluid.test.runTests("gpii.tests.browser.title.testEnvironment");

@@ -12,9 +12,10 @@ gpii.test.browser.loadTestingSupport();
 
 var goodUrl = gpii.test.browser.resolveFileUrl("%gpii-test-browser/tests/static/html/index.html");
 
-fluid.defaults("gpii.tests.browser.exists", {
+fluid.defaults("gpii.tests.browser.exists.caseHolder", {
     gradeNames: ["gpii.test.browser.caseHolder.static"],
     rawModules: [{
+        name: "Testing the `exists` function...",
         tests: [
             {
                 name: "Test looking for an element that exists...",
@@ -58,10 +59,14 @@ fluid.defaults("gpii.tests.browser.exists", {
     }]
 });
 
-gpii.test.browser.environment({
+
+fluid.defaults("gpii.tests.browser.exists.testEnvironment", {
+    gradeNames: ["gpii.test.browser.environment"],
     components: {
         caseHolder: {
-            type: "gpii.tests.browser.exists"
+            type: "gpii.tests.browser.exists.caseHolder"
         }
     }
 });
+
+fluid.test.runTests("gpii.tests.browser.exists.testEnvironment");

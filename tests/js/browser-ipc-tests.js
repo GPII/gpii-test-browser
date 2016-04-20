@@ -24,9 +24,10 @@ gpii.tests.browser.ipc.crudelyFireEvent = function (browser, selector, eventName
     }, selector, eventName);
 };
 
-fluid.defaults("gpii.tests.browser.ipc", {
+fluid.defaults("gpii.tests.browser.ipc.caseHolder", {
     gradeNames: ["gpii.test.browser.caseHolder.static"],
     rawModules: [{
+        name: "Test IPC communication...",
         tests: [
             {
                 name: "Test IPC communication...",
@@ -56,7 +57,8 @@ fluid.defaults("gpii.tests.browser.ipc", {
     }]
 });
 
-gpii.test.browser.environment({
+fluid.defaults("gpii.tests.browser.ipc.testEnvironment", {
+    gradeNames: ["gpii.test.browser.environment"],
     components: {
         browser: {
             type: "gpii.test.browser.eventRelay.browserWithMultiplexer",
@@ -76,7 +78,10 @@ gpii.test.browser.environment({
             }
         },
         caseHolder: {
-            type: "gpii.tests.browser.ipc"
+            type: "gpii.tests.browser.ipc.caseHolder"
         }
     }
 });
+
+fluid.test.runTests("gpii.tests.browser.ipc.testEnvironment");
+

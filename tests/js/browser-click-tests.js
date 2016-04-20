@@ -12,9 +12,10 @@ gpii.test.browser.loadTestingSupport();
 
 var startUrl = gpii.test.browser.resolveFileUrl("%gpii-test-browser/tests/static/html/click.html");
 
-fluid.defaults("gpii.tests.browser.click", {
+fluid.defaults("gpii.tests.browser.click.caseHolder", {
     gradeNames: ["gpii.test.browser.caseHolder.static"],
     rawModules: [{
+        name: "Testing the `click` function...",
         tests: [
             {
                 name: "Test clicking a selector that doesn't exist...",
@@ -111,10 +112,13 @@ fluid.defaults("gpii.tests.browser.click", {
     }]
 });
 
-gpii.test.browser.environment({
+fluid.defaults("gpii.tests.browser.click.testEnvironment", {
+    gradeNames: ["gpii.test.browser.environment"],
     components: {
         caseHolder: {
-            type: "gpii.tests.browser.click"
+            type: "gpii.tests.browser.click.caseHolder"
         }
     }
 });
+
+fluid.test.runTests("gpii.tests.browser.click.testEnvironment");

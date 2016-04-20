@@ -12,9 +12,10 @@ gpii.test.browser.loadTestingSupport();
 
 var goodUrl = gpii.test.browser.resolveFileUrl("%gpii-test-browser/tests/static/html/visible.html");
 
-fluid.defaults("gpii.tests.browser.visible", {
+fluid.defaults("gpii.tests.browser.visible.caseHolder", {
     gradeNames: ["gpii.test.browser.caseHolder.static"],
     rawModules: [{
+        name: "Testing `visible` function...",
         tests: [
             {
                 name: "Examine a visible element...",
@@ -80,10 +81,13 @@ fluid.defaults("gpii.tests.browser.visible", {
     }]
 });
 
-gpii.test.browser.environment({
+fluid.defaults("gpii.tests.browser.visible.testEnvironment", {
+    gradeNames: ["gpii.test.browser.environment"],
     components: {
         caseHolder: {
-            type: "gpii.tests.browser.visible"
+            type: "gpii.tests.browser.visible.caseHolder"
         }
     }
 });
+
+fluid.test.runTests("gpii.tests.browser.visible.testEnvironment");

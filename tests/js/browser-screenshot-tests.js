@@ -23,9 +23,10 @@ gpii.tests.browser.screenshot.fileExists = function (path) {
     jqUnit.assertTrue("The file should not be empty...", stats.size > 0);
 };
 
-fluid.defaults("gpii.tests.browser.screenshot", {
+fluid.defaults("gpii.tests.browser.screenshot.caseHolder", {
     gradeNames: ["gpii.test.browser.caseHolder.static"],
     rawModules: [{
+        name: "Testing screenshot functions...",
         tests: [
             {
                 name: "Test taking a PNG screenshot with the default options...",
@@ -101,10 +102,13 @@ fluid.defaults("gpii.tests.browser.screenshot", {
     }]
 });
 
-gpii.test.browser.environment({
+fluid.defaults("gpii.tests.browser.screenshot.testEnvironment", {
+    gradeNames: ["gpii.test.browser.environment"],
     components: {
         caseHolder: {
-            type: "gpii.tests.browser.screenshot"
+            type: "gpii.tests.browser.screenshot.caseHolder"
         }
     }
 });
+
+fluid.test.runTests("gpii.tests.browser.screenshot.testEnvironment");

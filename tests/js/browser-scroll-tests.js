@@ -18,9 +18,10 @@ gpii.tests.browser.scroll.getWindowOffset = function () {
     return [window.pageXOffset, window.pageYOffset];
 };
 
-fluid.defaults("gpii.tests.browser.scroll", {
+fluid.defaults("gpii.tests.browser.scroll.caseHolder", {
     gradeNames: ["gpii.test.browser.caseHolder.static"],
     rawModules: [{
+        name: "Testing `scrollTo` function...",
         tests: [
             {
                 name: "Test scrolling once...",
@@ -80,10 +81,13 @@ fluid.defaults("gpii.tests.browser.scroll", {
     }]
 });
 
-gpii.test.browser.environment({
+fluid.defaults("gpii.tests.browser.scroll.testEnvironment", {
+    gradeNames: ["gpii.test.browser.environment"],
     components: {
         caseHolder: {
-            type: "gpii.tests.browser.scroll"
+            type: "gpii.tests.browser.scroll.caseHolder"
         }
     }
 });
+
+fluid.test.runTests("gpii.tests.browser.scroll.testEnvironment");

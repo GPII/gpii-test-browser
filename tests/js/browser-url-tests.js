@@ -18,9 +18,10 @@ gpii.test.browser.loadTestingSupport();
 
 var goodUrl = gpii.test.browser.resolveFileUrl("%gpii-test-browser/tests/static/html/index.html");
 
-fluid.defaults("gpii.tests.browser.url", {
+fluid.defaults("gpii.tests.browser.url.caseHolder", {
     gradeNames: ["gpii.test.browser.caseHolder.static"],
     rawModules: [{
+        name: "Testing `url` function...",
         tests: [
             {
                 name: "Test querying the URL of a sample page...",
@@ -53,10 +54,13 @@ fluid.defaults("gpii.tests.browser.url", {
     }]
 });
 
-gpii.test.browser.environment({
+fluid.defaults("gpii.tests.browser.url.testEnvironment", {
+    gradeNames: ["gpii.test.browser.environment"],
     components: {
         caseHolder: {
-            type: "gpii.tests.browser.url"
+            type: "gpii.tests.browser.url.caseHolder"
         }
     }
 });
+
+fluid.test.runTests("gpii.tests.browser.url.testEnvironment");

@@ -12,9 +12,10 @@ gpii.test.browser.loadTestingSupport();
 
 var typeDemoUrl = gpii.test.browser.resolveFileUrl("%gpii-test-browser/tests/static/html/type.html");
 
-fluid.defaults("gpii.tests.browser.insert", {
+fluid.defaults("gpii.tests.browser.insert.caseHolder", {
     gradeNames: ["gpii.test.browser.caseHolder.static"],
     rawModules: [{
+        name: "Test `insert` function...",
         tests: [
             {
                 name: "Test inserting into and clearing a form field...",
@@ -77,10 +78,13 @@ fluid.defaults("gpii.tests.browser.insert", {
     }]
 });
 
-gpii.test.browser.environment({
+fluid.defaults("gpii.tests.browser.insert.testEnvironment", {
+    gradeNames: ["gpii.test.browser.environment"],
     components: {
         caseHolder: {
-            type: "gpii.tests.browser.insert"
+            type: "gpii.tests.browser.insert.caseHolder"
         }
     }
 });
+
+fluid.test.runTests("gpii.tests.browser.insert.testEnvironment");

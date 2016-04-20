@@ -15,9 +15,10 @@ var injectedJsPath = path.resolve(__dirname, "../static/js/inject.js");
 
 var injectUrl = gpii.test.browser.resolveFileUrl("%gpii-test-browser/tests/static/html/inject.html");
 
-fluid.defaults("gpii.tests.browser.inject", {
+fluid.defaults("gpii.tests.browser.inject.caseHolder", {
     gradeNames: ["gpii.test.browser.caseHolder.static"],
     rawModules: [{
+        name: "Test injecting javascript content into a document...",
         tests: [
             {
                 name: "Test injecting javascript content into a document...",
@@ -47,10 +48,13 @@ fluid.defaults("gpii.tests.browser.inject", {
     }]
 });
 
-gpii.test.browser.environment({
+fluid.defaults("gpii.tests.browser.inject.testEnvironment", {
+    gradeNames: ["gpii.test.browser.environment"],
     components: {
         caseHolder: {
-            type: "gpii.tests.browser.inject"
+            type: "gpii.tests.browser.inject.caseHolder"
         }
     }
 });
+
+fluid.test.runTests("gpii.tests.browser.inject.testEnvironment");

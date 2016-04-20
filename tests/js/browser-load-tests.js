@@ -13,9 +13,10 @@ gpii.test.browser.loadTestingSupport();
 var goodUrl = gpii.test.browser.resolveFileUrl("%gpii-test-browser/tests/static/html/second.html");
 var badUrl  = gpii.test.browser.resolveFileUrl("%gpii-test-browser/tests/static/html/bogus.html");
 
-fluid.defaults("gpii.tests.browser.load", {
+fluid.defaults("gpii.tests.browser.load.caseHolder", {
     gradeNames: ["gpii.test.browser.caseHolder.static"],
     rawModules: [{
+        name: "Test `load` function...",
         tests: [
             {
                 name: "Test loading a file that exists...",
@@ -54,10 +55,13 @@ fluid.defaults("gpii.tests.browser.load", {
     }]
 });
 
-gpii.test.browser.environment({
+fluid.defaults("gpii.tests.browser.load.testEnvironment", {
+    gradeNames: ["gpii.test.browser.environment"],
     components: {
         caseHolder: {
-            type: "gpii.tests.browser.load"
+            type: "gpii.tests.browser.load.caseHolder"
         }
     }
 });
+
+fluid.test.runTests("gpii.tests.browser.load.testEnvironment");

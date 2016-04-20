@@ -12,9 +12,10 @@ gpii.test.browser.loadTestingSupport();
 
 var testUrl = gpii.test.browser.resolveFileUrl("%gpii-test-browser/tests/static/html/fluid.html");
 
-fluid.defaults("gpii.tests.browser.fluid", {
+fluid.defaults("gpii.tests.browser.fluid.caseHolder", {
     gradeNames: ["gpii.test.browser.caseHolder.static"],
     rawModules: [{
+        name: "Testing the client-side functions that require infusion...",
         tests: [
             {
                 name: "Test looking up the document title...",
@@ -58,10 +59,13 @@ fluid.defaults("gpii.tests.browser.fluid", {
     }]
 });
 
-gpii.test.browser.environment({
+fluid.defaults("gpii.tests.browser.fluid.testEnvironment", {
+    gradeNames: ["gpii.test.browser.environment"],
     components: {
         caseHolder: {
-            type: "gpii.tests.browser.fluid"
+            type: "gpii.tests.browser.fluid.caseHolder"
         }
     }
 });
+
+fluid.test.runTests("gpii.tests.browser.fluid.testEnvironment");

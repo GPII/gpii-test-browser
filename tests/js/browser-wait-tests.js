@@ -12,9 +12,10 @@ gpii.test.browser.loadTestingSupport();
 
 var waitUrl = gpii.test.browser.resolveFileUrl("%gpii-test-browser/tests/static/html/wait.html");
 
-fluid.defaults("gpii.tests.browser.wait", {
+fluid.defaults("gpii.tests.browser.wait.caseHolder", {
     gradeNames: ["gpii.test.browser.caseHolder.static"],
     rawModules: [{
+        name: "Testing `wait` function...",
         tests: [
             {
                 name: "Test waiting for dynamic content...",
@@ -53,10 +54,13 @@ fluid.defaults("gpii.tests.browser.wait", {
     }]
 });
 
-gpii.test.browser.environment({
+fluid.defaults("gpii.tests.browser.wait.testEnvironment", {
+    gradeNames: ["gpii.test.browser.environment"],
     components: {
         caseHolder: {
-            type: "gpii.tests.browser.wait"
+            type: "gpii.tests.browser.wait.caseHolder"
         }
     }
 });
+
+fluid.test.runTests("gpii.tests.browser.wait.testEnvironment");

@@ -13,7 +13,7 @@
   "author": "Tony Atkins <tony@raisingthefloor.org>",
   "license": "BSD-3-Clause",
   "dependencies": {
-    "infusion": "2.0.0-dev.20151211T025229Z.eabb4fc",
+    "infusion": "2.0.0-dev.20160309T145652Z.9f515ec",
     "nightmare": "2.1.6"
   },
   "devDependencies": {

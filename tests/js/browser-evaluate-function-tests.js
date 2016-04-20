@@ -12,9 +12,10 @@ gpii.test.browser.loadTestingSupport();
 
 var testUrl = gpii.test.browser.resolveFileUrl("%gpii-test-browser/tests/static/html/evaluate-functions.html");
 
-fluid.defaults("gpii.tests.browser.evaluate", {
+fluid.defaults("gpii.tests.browser.evaluate.caseHolder", {
     gradeNames: ["gpii.test.browser.caseHolder.static"],
     rawModules: [{
+        name: "Testing the `evaluate` function...",
         tests: [
             {
                 name: "Test looking up the text of a single element...",
@@ -255,10 +256,14 @@ fluid.defaults("gpii.tests.browser.evaluate", {
     }]
 });
 
-gpii.test.browser.environment({
+
+fluid.defaults("gpii.tests.browser.evaluate.testEnvironment", {
+    gradeNames: ["gpii.test.browser.environment"],
     components: {
         caseHolder: {
-            type: "gpii.tests.browser.evaluate"
+            type: "gpii.tests.browser.evaluate.caseHolder"
         }
     }
 });
+
+fluid.test.runTests("gpii.tests.browser.evaluate.testEnvironment");

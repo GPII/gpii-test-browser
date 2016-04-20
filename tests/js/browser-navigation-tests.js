@@ -12,9 +12,10 @@ gpii.test.browser.loadTestingSupport();
 
 var startUrl = gpii.test.browser.resolveFileUrl("%gpii-test-browser/tests/static/html/click.html");
 
-fluid.defaults("gpii.tests.browser.navigation", {
+fluid.defaults("gpii.tests.browser.navigation.caseHolder", {
     gradeNames: ["gpii.test.browser.caseHolder.static"],
     rawModules: [{
+        name: "Testing navigation functions...",
         tests: [
             {
                 name: "Test navigating backwards and forwards...",
@@ -67,10 +68,13 @@ fluid.defaults("gpii.tests.browser.navigation", {
     }]
 });
 
-gpii.test.browser.environment({
+fluid.defaults("gpii.tests.browser.navigation.testEnvironment", {
+    gradeNames: ["gpii.test.browser.environment"],
     components: {
         caseHolder: {
-            type: "gpii.tests.browser.navigation"
+            type: "gpii.tests.browser.navigation.caseHolder"
         }
     }
 });
+
+fluid.test.runTests("gpii.tests.browser.navigation.testEnvironment");
