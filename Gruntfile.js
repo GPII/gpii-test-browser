@@ -10,13 +10,13 @@ module.exports = function (grunt) {
             }
         },
         jsonlint: {
-            src: ["config/**/*.json", "test/**/*.json", "unifier/**/*.json", "email/**/*.json", "front-end/**/*.json", "import/**/*.json", "test/**/*.json"]
+            src: ["src/**/*.json", "tests/**/*.json"]
         }
     });
+
+    grunt.registerTask("lint", "Apply jshint and jsonlint", ["jshint", "jsonlint"]);
 
     grunt.loadNpmTasks("grunt-contrib-jshint");
     grunt.loadNpmTasks("grunt-jsonlint");
     grunt.loadNpmTasks("grunt-shell");
-    
-    grunt.registerTask("lint", "Apply jshint and jsonlint", ["jshint", "jsonlint"]);
 };
