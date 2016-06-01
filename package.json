@@ -4,7 +4,7 @@
   "description": "Fluid component to allow browser testing using Nightmare...",
   "main": "index.js",
   "scripts": {
-    "test": "node tests/all-tests.js"
+    "test": "node node_modules/istanbul/lib/cli.js cover tests/all-tests.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,7 @@
     "grunt-contrib-jshint": "0.9.0",
     "grunt-jsonlint": "1.0.4",
     "grunt-shell": "0.6.4",
+    "istanbul": "0.4.3",
     "kettle": "git://github.com/amb26/kettle.git#d808f3d5e326265aab9aaa1014703d75fa8ef0d0",
     "node-jqunit": "~1.1.3"
   }
