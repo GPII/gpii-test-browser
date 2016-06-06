@@ -14,7 +14,7 @@
   "license": "BSD-3-Clause",
   "dependencies": {
     "infusion": "2.0.0-dev.20160519T222603Z.754d2c6",
-    "nightmare": "2.1.6"
+    "nightmare": "2.5.0"
   },
   "devDependencies": {
     "cookie": "^0.2.0",
