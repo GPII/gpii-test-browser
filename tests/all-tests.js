@@ -11,6 +11,7 @@
 
     TODO:  Remove the workaround once this issue is resolved: https://github.com/segmentio/nightmare/issues/282
  */
+"use strict";
 process.setMaxListeners(50);
 
 require("./js/browser-check-tests.js");

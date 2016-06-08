@@ -3,7 +3,7 @@ var fluid = fluid || require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 
 fluid.registerNamespace("gpii.test.browser");
-/* globals $, fluid */
+/* globals $ */
 /*
 
     This suite contains functions that are meant to be used in interrogating the browser state using the
