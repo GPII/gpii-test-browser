@@ -1,3 +1,17 @@
+# **NOTE: THIS PROJECT IS DEPRECATED**
+
+**This project has been superseded by the `gpii-webdriver` project, which makes it possible to test everything here
+and much more.  If you are using this project in your tests, you are encouraged to migrated to `gpii-webdriver` ASAP.
+That project can be found at:**
+
+**[https://github.com/GPII/gpii-webdriver](https://github.com/GPII/gpii-webdriver)**
+
+**This project will only be updated until the projects we know of that use it can be migrated to `gpii-webdriver`.  If
+you cannot update in a reasonable time frame, please get in touch so that we are aware of your project and so that we
+can assist in the migration as needed.**
+
+----
+
 # Introduction
 
 This package provides a set of Fluid components designed to assist in testing complex suites of components, such as
